@@ -72,19 +72,39 @@ export class KoaInversifyServer<KoaState> {
         c[m.name] = c[m.name].bind(c);
         switch (m.method) {
           case 'GET':
-            this._router.get(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
+            this._router.get(
+              `${controllerMetadata.path}${m.path}`,
+              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
+              c[m.name],
+            );
             break;
           case 'POST':
-            this._router.post(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
+            this._router.post(
+              `${controllerMetadata.path}${m.path}`,
+              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
+              c[m.name],
+            );
             break;
           case 'DELETE':
-            this._router.delete(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
+            this._router.delete(
+              `${controllerMetadata.path}${m.path}`,
+              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
+              c[m.name],
+            );
             break;
           case 'PUT':
-            this._router.put(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
+            this._router.put(
+              `${controllerMetadata.path}${m.path}`,
+              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
+              c[m.name],
+            );
             break;
           case 'PATCH':
-            this._router.patch(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
+            this._router.patch(
+              `${controllerMetadata.path}${m.path}`,
+              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
+              c[m.name],
+            );
             break;
         }
       });
