@@ -11,6 +11,7 @@ module.exports = () => ({
   },
   entry: {
     index: path.resolve(__dirname, 'src/index.ts'),
+    testing: path.resolve(__dirname, 'src/testing.ts'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -30,7 +31,7 @@ module.exports = () => ({
       },
     ],
   },
-  devtools: 'inline-source-map',
+  devtool: 'inline-source-map',
   externals: [nodeExternals()],
   resolve: {
     alias: {

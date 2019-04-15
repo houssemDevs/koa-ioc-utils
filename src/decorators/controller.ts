@@ -14,12 +14,11 @@ export function controller(
     };
 
     const currentMetadas =
-      Reflect.getMetadata(METADATA_KEYS.controller, Reflect) || [];
+      Reflect.getMetadata(METADATA_KEYS.controller, Reflect) ||
+      new Map<string, ControllerMetadata>();
 
-    Reflect.defineMetadata(
-      METADATA_KEYS.controller,
-      [newMetadata, ...currentMetadas],
-      Reflect,
-    );
+    currentMetadas.set(target.name, newMetadata);
+
+    Reflect.defineMetadata(METADATA_KEYS.controller, currentMetadas, Reflect);
   };
 }

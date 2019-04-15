@@ -25,7 +25,7 @@ module.exports = () => ({
       },
     ],
   },
-  devtools: 'source-map',
+  devtool: 'source-map',
   externals: [nodeExternals()],
   resolve: {
     alias: {

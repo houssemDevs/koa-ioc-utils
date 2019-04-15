@@ -1,0 +1,1 @@
+export { KoaInversifyServer } from './server';
