@@ -1,6 +1,6 @@
 export type KoaMiddleware = (ctx: any, next: () => Promise<any>) => any;
 
-export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'UPDATE' | 'DELETE';
+export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 /* #region  Metadata types */
 export interface ControllerMetadata {
@@ -16,5 +16,4 @@ export interface MethodMetadata {
   method: HttpMethods;
   middlewares: KoaMiddleware[];
 }
-
 /* #endregion */

@@ -6,16 +6,14 @@ import KoaRouter from 'koa-router';
 import { TYPES } from '@/inversify/constants';
 import {
   getControllerMetadataByName,
+  getControllerNameFromInstance,
   getControllersFromMetadata,
   getMethodsMetadataFromController,
 } from '@/utils';
 import { getControllersFromContainer } from './utils';
 
 export class KoaInversifyServer<KoaState> {
-  private errorHandler: (
-    err: Error,
-    ctx: ParameterizedContext<KoaState>,
-  ) => void;
+  private errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void;
   constructor(
     private _container: Container,
     private _app: Koa = new Koa<KoaState>(),
@@ -31,22 +29,18 @@ export class KoaInversifyServer<KoaState> {
     this._router = new KoaRouter({ prefix });
     return this;
   }
-  public configErrorHandler(
-    errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void,
-  ) {
+  public configErrorHandler(errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void) {
     this.errorHandler = errorHandler;
   }
   public build(): Koa {
     // Setup error middleware
-    this._app.use(
-      async (ctx: ParameterizedContext<KoaState>, next: () => Promise<any>) => {
-        try {
-          await next();
-        } catch (err) {
-          this.errorHandler(err, ctx);
-        }
-      },
-    );
+    this._app.use(async (ctx: ParameterizedContext<KoaState>, next: () => Promise<any>) => {
+      try {
+        await next();
+      } catch (err) {
+        this.errorHandler(err, ctx);
+      }
+    });
 
     // registering controllers
     this.registerControllers();
@@ -72,49 +66,25 @@ export class KoaInversifyServer<KoaState> {
   private mountRoutes() {
     const controllers = getControllersFromContainer(this._container);
     controllers.forEach((c) => {
-      const controllerMetadata = getControllerMetadataByName(
-        Object.getPrototypeOf(c).constructor.name,
-      );
-      const methodsMetadata = getMethodsMetadataFromController(
-        controllerMetadata.controller,
-      );
+      const controllerMetadata = getControllerMetadataByName(getControllerNameFromInstance(c));
+      const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
       methodsMetadata.forEach((m) => {
         c[m.name] = c[m.name].bind(c);
         switch (m.method) {
           case 'GET':
-            this._router.get(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose(m.middlewares),
-              c[m.name],
-            );
+            this._router.get(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
             break;
           case 'POST':
-            this._router.post(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose(m.middlewares),
-              c[m.name],
-            );
+            this._router.post(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
             break;
           case 'DELETE':
-            this._router.delete(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose(m.middlewares),
-              c[m.name],
-            );
+            this._router.delete(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
             break;
           case 'PUT':
-            this._router.put(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose(m.middlewares),
-              c[m.name],
-            );
+            this._router.put(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
             break;
-          case 'UPDATE':
-            this._router.patch(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose(m.middlewares),
-              c[m.name],
-            );
+          case 'PATCH':
+            this._router.patch(`${controllerMetadata.path}${m.path}`, koacompose(m.middlewares), c[m.name]);
             break;
         }
       });
