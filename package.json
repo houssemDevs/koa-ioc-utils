@@ -1,6 +1,6 @@
 {
   "name": "koa-ioc-utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "IoC utils for koa apps that scale",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
