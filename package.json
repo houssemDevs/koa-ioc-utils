@@ -52,10 +52,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/houssemdevs/bpnodepkg.git"
+    "url": "git+https://github.com/houssemdevs/koa-ioc-utils.git"
   },
   "bugs": {
-    "url": "https://github.com/houssemdevs/bpnodepkg/issues"
+    "url": "https://github.com/houssemdevs/koa-ioc-utils/issues"
   },
-  "homepage": "https://github.com/houssemdevs/bpnodepkg#readme"
+  "homepage": "https://github.com/houssemdevs/koa-ioc-utils#readme"
 }
