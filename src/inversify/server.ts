@@ -68,46 +68,29 @@ export class KoaInversifyServer<KoaState> {
     controllers.forEach((c) => {
       const controllerMetadata = getControllerMetadataByName(getControllerNameFromInstance(c));
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
+      const router = new KoaRouter({ prefix: controllerMetadata.path });
       methodsMetadata.forEach((m) => {
         c[m.name] = c[m.name].bind(c);
         switch (m.method) {
           case 'GET':
-            this._router.get(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
-              c[m.name],
-            );
+            router.get(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
             break;
           case 'POST':
-            this._router.post(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
-              c[m.name],
-            );
+            router.post(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
             break;
           case 'DELETE':
-            this._router.delete(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
-              c[m.name],
-            );
+            router.delete(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
             break;
           case 'PUT':
-            this._router.put(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
-              c[m.name],
-            );
+            router.put(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
             break;
           case 'PATCH':
-            this._router.patch(
-              `${controllerMetadata.path}${m.path}`,
-              koacompose([...controllerMetadata.middlewares, ...m.middlewares]),
-              c[m.name],
-            );
+            router.patch(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
             break;
         }
       });
+      this._router.use(router.routes());
+      this._router.use(router.allowedMethods());
     });
   }
 }
