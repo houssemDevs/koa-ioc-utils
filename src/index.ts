@@ -1,12 +1,4 @@
-export {
-  controller,
-  httpDelete,
-  httpGet,
-  httpMethod,
-  httpPost,
-  httpPut,
-  httpUpdate,
-} from './decorators';
+export { controller, httpDelete, httpGet, httpMethod, httpPost, httpPut, httpPatch } from './decorators';
 
 export { HttpMethods } from './types';
 
