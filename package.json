@@ -6,8 +6,10 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "npx jest",
-    "build": "npx webpack",
-    "dev": "npx webpack --config webpack.dev.js --watch",
+    "prebuild": "npm run clean",
+    "build": "npx tsc",
+    "dev": "npx tsc --watch",
+    "clean": "npx rimraf -G ./lib",
     "preversion": "npm run build && npm t",
     "postversion": "git push && git push --tags"
   },
@@ -29,17 +31,13 @@
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
     "@types/supertest": "^2.0.7",
-    "@types/webpack": "^4.4.27",
-    "clean-webpack-plugin": "^2.0.1",
     "jest": "^24.7.1",
+    "rimraf": "^2.6.3",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
-    "webpack-node-externals": "^1.7.2"
+    "typescript": "^3.4.1"
   },
   "directories": {
     "lib": "lib"
