@@ -70,22 +70,23 @@ export class KoaInversifyServer<KoaState> {
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
       const router = new KoaRouter({ prefix: controllerMetadata.path });
       methodsMetadata.forEach((m) => {
-        c[m.name] = c[m.name].bind(c);
+        const boundedMethod = c[m.name].bind(c);
+        const routeMiddleware = koacompose([...controllerMetadata.middlewares, ...m.middlewares]);
         switch (m.method) {
           case 'GET':
-            router.get(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
+            router.get(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'POST':
-            router.post(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
+            router.post(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'DELETE':
-            router.delete(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
+            router.delete(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'PUT':
-            router.put(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
+            router.put(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'PATCH':
-            router.patch(`${m.path}`, koacompose([...controllerMetadata.middlewares, ...m.middlewares]), c[m.name]);
+            router.patch(`${m.path}`, routeMiddleware, boundedMethod);
             break;
         }
       });
