@@ -1,6 +1,10 @@
-export type KoaMiddleware = (ctx: any, next: () => Promise<any>) => any;
+import { ParameterizedContext } from 'koa';
 
-export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export interface KoaMiddleware {
+    (ctx: ParameterizedContext, next: () => Promise<any>): void
+}
+
+export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 /* #region  Metadata types */
 export interface ControllerMetadata {
@@ -13,7 +17,7 @@ export interface ControllerMetadata {
 export interface MethodMetadata {
   name: string;
   path: string;
-  method: HttpMethods;
+  method: KnownHttpMethods | string;
   middlewares: KoaMiddleware[];
 }
 /* #endregion */

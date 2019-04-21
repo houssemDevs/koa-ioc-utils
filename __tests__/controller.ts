@@ -3,10 +3,10 @@ import { METADATA_KEYS } from '../src/constants';
 import { controller } from '../src/decorators/controller';
 import { ControllerMetadata } from '../src/types';
 
+@controller('/user')
 class UserController {}
 
 describe('controller decorator', () => {
-  Reflect.decorate([controller('/user'), controller('/user')], UserController);
   it('should add correct metadata', () => {
     const expectedMetadata: ControllerMetadata = {
       name: UserController.name,
