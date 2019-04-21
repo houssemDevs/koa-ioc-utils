@@ -13,7 +13,10 @@ import {
 import { getControllersFromContainer } from './utils';
 
 export class KoaInversifyServer<KoaState> {
-  private errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void;
+  private errorHandler: (
+    err: Error,
+    ctx: ParameterizedContext<KoaState>,
+  ) => void;
   constructor(
     private _container: Container,
     private _app: Koa = new Koa<KoaState>(),
@@ -29,18 +32,22 @@ export class KoaInversifyServer<KoaState> {
     this._router = new KoaRouter({ prefix });
     return this;
   }
-  public configErrorHandler(errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void) {
+  public configErrorHandler(
+    errorHandler: (err: Error, ctx: ParameterizedContext<KoaState>) => void,
+  ) {
     this.errorHandler = errorHandler;
   }
   public build(): Koa {
     // Setup error middleware
-    this._app.use(async (ctx: ParameterizedContext<KoaState>, next: () => Promise<any>) => {
-      try {
-        await next();
-      } catch (err) {
-        this.errorHandler(err, ctx);
-      }
-    });
+    this._app.use(
+      async (ctx: ParameterizedContext<KoaState>, next: () => Promise<any>) => {
+        try {
+          await next();
+        } catch (err) {
+          this.errorHandler(err, ctx);
+        }
+      },
+    );
 
     // registering controllers
     this.registerControllers();
@@ -57,6 +64,7 @@ export class KoaInversifyServer<KoaState> {
     const controllersMetadata = getControllersFromMetadata();
     controllersMetadata.forEach((c) => {
       decorate(injectable(), c.controller);
+
       this._container
         .bind(TYPES.controller)
         .to(c.controller as any)
@@ -66,12 +74,19 @@ export class KoaInversifyServer<KoaState> {
   private mountRoutes() {
     const controllers = getControllersFromContainer(this._container);
     controllers.forEach((c) => {
-      const controllerMetadata = getControllerMetadataByName(getControllerNameFromInstance(c));
-      const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
+      const controllerMetadata = getControllerMetadataByName(
+        getControllerNameFromInstance(c),
+      );
+      const methodsMetadata = getMethodsMetadataFromController(
+        controllerMetadata.controller,
+      );
       const router = new KoaRouter({ prefix: controllerMetadata.path });
       methodsMetadata.forEach((m) => {
         const boundedMethod = c[m.name].bind(c);
-        const routeMiddleware = koacompose([...controllerMetadata.middlewares, ...m.middlewares]);
+        const routeMiddleware = koacompose([
+          ...controllerMetadata.middlewares,
+          ...m.middlewares,
+        ]);
         switch (m.method) {
           case 'GET':
             router.get(`${m.path}`, routeMiddleware, boundedMethod);
@@ -87,6 +102,19 @@ export class KoaInversifyServer<KoaState> {
             break;
           case 'PATCH':
             router.patch(`${m.path}`, routeMiddleware, boundedMethod);
+            break;
+          default:
+            router.use(
+              async (
+                ctx: ParameterizedContext<KoaState>,
+                next: () => Promise<any>,
+              ) => {
+                if (ctx.method === m.method) {
+                  await next();
+                }
+              },
+              boundedMethod,
+            );
             break;
         }
       });
