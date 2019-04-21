@@ -1,7 +1,7 @@
 import { METADATA_KEYS } from '@/constants';
-import { HttpMethods, KoaMiddleware, MethodMetadata } from '@/types';
+import { KnownHttpMethods, KoaMiddleware, MethodMetadata } from '@/types';
 
-export function httpMethod(method: HttpMethods, path: string, ...middlewares: KoaMiddleware[]): MethodDecorator {
+export function httpMethod(method: KnownHttpMethods | string, path: string, ...middlewares: KoaMiddleware[]): MethodDecorator {
   return function(target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const newMetadata: MethodMetadata = {
       name: String(propertyKey),
