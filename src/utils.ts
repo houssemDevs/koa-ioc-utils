@@ -17,7 +17,7 @@ export const getMethodsMetadataFromController = (controller: Function): MethodMe
 };
 
 export const getControllerNameFromInstance = (c: any): string => {
-  return Object.getPrototypeOf(c).constructor.name;
+  return c.constructor.name;
 };
 
 export const getControllerMetadataByName = (name: string): ControllerMetadata => {
