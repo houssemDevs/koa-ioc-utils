@@ -1,8 +1,6 @@
 import { ParameterizedContext } from 'koa';
 
-export interface KoaMiddleware {
-    (ctx: ParameterizedContext, next: () => Promise<any>): void
-}
+export type KoaMiddleware = (ctx: ParameterizedContext, next: () => Promise<any>) => void;
 
 export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

@@ -8,10 +8,14 @@
     "test": "npx jest",
     "prebuild": "npm run clean",
     "build": "npx tsc",
+    "predev": "npm run clean",
     "dev": "npx tsc --watch",
     "clean": "npx rimraf -G ./lib",
     "preversion": "npm run build && npm t",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "format": "npx prettier --write --config prettier.config.js ./src/**/*.ts",
+    "lint": "npx tslint --config tslint.json --project tsconfig.json --fix",
+    "staged": "npx lint-staged"
   },
   "files": [
     "lib/**/*"
@@ -32,11 +36,15 @@
     "@types/koa-router": "^7.0.40",
     "@types/supertest": "^2.0.7",
     "jest": "^24.7.1",
+    "lint-staged": "^8.1.5",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.3",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.1"
   },
   "directories": {
@@ -55,5 +63,16 @@
   "bugs": {
     "url": "https://github.com/houssemdevs/koa-ioc-utils/issues"
   },
-  "homepage": "https://github.com/houssemdevs/koa-ioc-utils#readme"
+  "homepage": "https://github.com/houssemdevs/koa-ioc-utils#readme",
+  "pre-commit": [
+    "staged"
+  ],
+  "lint-staged": {
+    "src/**/*.ts": [
+      "tslint --config tslint.json --fix",
+      "prettier --write --config prettier.config.js",
+      "git add",
+      "jest --bail --findRelatedTests"
+    ]
+  }
 }
