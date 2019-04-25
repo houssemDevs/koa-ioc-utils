@@ -10,7 +10,7 @@ import {
   getObjectName,
 } from '../utils';
 import { TYPES } from './constants';
-import { ErrorHandler } from './types';
+import { ConfigApp, ErrorHandler } from './types';
 import { getControllersFromContainer } from './utils';
 
 /**
@@ -24,6 +24,7 @@ export class KoaInversifyApplication<KoaState> {
   private errorHandler: ErrorHandler;
   private logger: Middleware;
   private middlewares: Middleware[];
+  private appConfigure: ConfigApp | undefined;
   /**
    * construct a new KoaInversifyApplication and setup default
    * error handler and default logger.
@@ -49,6 +50,16 @@ export class KoaInversifyApplication<KoaState> {
       const time = Date.now() - startedAt;
       console.log(`--> ${ctx.method} ${ctx.path} ${ctx.host} ${ctx.status} ${time}ms`);
     };
+  }
+
+  /**
+   * get a function that take a koa app an configure it with server level
+   * middlewares.
+   * @param c configurtion function
+   */
+  public configApp(c: ConfigApp) {
+    this.appConfigure = c;
+    return this;
   }
 
   /**
@@ -80,15 +91,6 @@ export class KoaInversifyApplication<KoaState> {
   }
 
   /**
-   * setup the middlewares that are run ahead of all controllers
-   * @param middlewares a list of koa middlewares
-   */
-  public configMiddlewares(...middlewares: Middleware[]) {
-    this.middlewares = middlewares;
-    return this;
-  }
-
-  /**
    * setup the application logger middleware. this is the first
    * middleware in the middleware chain.
    * @param logger a koa middleware that will handle logging.
@@ -114,8 +116,10 @@ export class KoaInversifyApplication<KoaState> {
     // Setup error handler
     this.setupErrorMiddleware();
 
-    // Setup middlewares.
-    this._app.use(compose(this.middlewares));
+    // Config app
+    if (this.appConfigure) {
+      this.appConfigure(this._app);
+    }
 
     // Registering controllers
     this.registerControllers();
