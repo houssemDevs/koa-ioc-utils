@@ -13,11 +13,7 @@ their methods.
 
 Example usage:
 ```javascript
-const {
-    controller, 
-    httpGet,
-    KoaInversifyServer
-     } = require('koa-ioc-utils');
+const { controller, httpGet, KoaInversifyServer } = require('koa-ioc-utils');
 
 @controller('/users')
 class UserController {
