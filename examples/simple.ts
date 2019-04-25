@@ -13,6 +13,7 @@ class MyMiddleware extends BaseMiddleware {
   }
   public async handle(ctx: ParameterizedContext<any, {}>, next: () => Promise<any>): Promise<any> {
     ctx.state.s = 's';
+    console.log('middleware');
     await next();
   }
 }
@@ -22,6 +23,7 @@ const id = Symbol(MyMiddleware.name);
 
 class UserController {
   public getUser(ctx: ParameterizedContext) {
+    console.log(ctx.state.s);
     if (ctx.state.s === 's') {
       ctx.status = 200;
       ctx.body = { name: 'houssem', age: 29 };
@@ -36,6 +38,4 @@ const container = new Container({ skipBaseClassChecks: true });
 
 container.bind<BaseMiddleware>(id).to(MyMiddleware);
 
-const app = new KoaInversifyApplication(container).build();
-
-supertest.agent(app.callback()).get('/users');
+new KoaInversifyApplication(container).run(3000);
