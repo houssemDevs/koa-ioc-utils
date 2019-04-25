@@ -10,10 +10,12 @@
     "build": "npx tsc",
     "predev": "npm run clean",
     "dev": "npx tsc --watch",
+    "predoc": "npx rimraf -G ./docs",
     "doc": "npx typedoc --out ./docs --mode modules --readme ./README.md",
+    "postdoc": "git add ./docs/*",
     "clean": "npx rimraf -G ./lib",
     "preversion": "npm run build && npm t",
-    "postversion": "git push && git push --tags",
+    "postversion": "npm run doc && git push && git push --tags",
     "format": "npx prettier --write --config prettier.config.js ./src/**/*.ts",
     "lint": "npx tslint --config tslint.json --project tsconfig.json --fix",
     "staged": "npx lint-staged"

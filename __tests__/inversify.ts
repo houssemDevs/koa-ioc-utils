@@ -1,9 +1,9 @@
 import { Container, decorate, inject, injectable } from 'inversify';
-import koa, { ParameterizedContext } from 'koa';
+import Application, { ParameterizedContext } from 'koa';
 import 'reflect-metadata';
-import request from 'supertest';
+import supertest from 'supertest';
 
-import { controller, httpGet, KoaInversifyServer } from '../src';
+import { controller, httpGet, KoaInversifyApplication } from '../src';
 import { METADATA_KEYS } from '../src/constants';
 
 describe('KoaInversifyServer', () => {
@@ -72,28 +72,28 @@ describe('KoaInversifyServer', () => {
   const container = new Container();
   container.bind<IUsersService>(UserService).toSelf();
 
-  const app = new KoaInversifyServer(container).build();
+  const app = new KoaInversifyApplication(container).build();
 
   it('should respond correctly', async () => {
-    const resp = await request.agent(app.callback()).get('/user/name');
+    const resp = await supertest.agent(app.callback()).get('/user/name');
     expect(resp.body).toEqual({ name: 'GHIAT Houssem' });
     expect(resp.status).toEqual(200);
   });
 
   it('should handle errors correctly', async () => {
-    const resp = await request.agent(app.callback()).get('/user/error');
+    const resp = await supertest.agent(app.callback()).get('/user/error');
     expect(resp.status).toEqual(500);
     expect(resp.text).toMatch(/gone\swrong/);
   });
 
   it('should access container services correctly', async () => {
-    const resp = await request.agent(app.callback()).get('/user/users');
+    const resp = await supertest.agent(app.callback()).get('/user/users');
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual(['houssem', 'narimene']);
   });
 
   it('should permit controller level middlewares correctly', async () => {
-    const resp = await request.agent(app.callback()).get('/mid');
+    const resp = await supertest.agent(app.callback()).get('/mid');
     expect(resp.status).toEqual(200);
     expect(resp.text).toMatch('200');
   });
