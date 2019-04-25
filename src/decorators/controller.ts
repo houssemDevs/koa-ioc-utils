@@ -10,7 +10,8 @@ export const controller = (path: string, ...middlewares: KoaMiddleware[]): Class
       path,
     };
 
-    const currentMetadas = Reflect.getMetadata(METADATA_KEYS.controller, Reflect) || new Map<string, ControllerMetadata>();
+    const currentMetadas =
+      Reflect.getMetadata(METADATA_KEYS.controller, Reflect) || new Map<string, ControllerMetadata>();
 
     currentMetadas.set(target.name, newMetadata);
 

@@ -4,7 +4,12 @@ import compose from 'koa-compose';
 import Router from 'koa-router';
 
 import { TYPES } from '@/inversify/constants';
-import { getControllerMetadataByName, getControllerNameFromInstance, getControllersFromMetadata, getMethodsMetadataFromController } from '@/utils';
+import {
+  getControllerMetadataByName,
+  getControllerNameFromInstance,
+  getControllersFromMetadata,
+  getMethodsMetadataFromController,
+} from '@/utils';
 import { KoaMiddleware } from '../types';
 import { ErrorHandler } from './types';
 import { getControllersFromContainer } from './utils';
@@ -14,7 +19,11 @@ export class KoaInversifyServer<KoaState> {
   private logger: KoaMiddleware;
   private middlewares: KoaMiddleware[];
 
-  constructor(private readonly _container: Container, private readonly _app = new Application<KoaState>(), private _router = new Router<KoaState>()) {
+  constructor(
+    private readonly _container: Container,
+    private readonly _app = new Application<KoaState>(),
+    private _router = new Router<KoaState>()
+  ) {
     this.middlewares = [];
     this.errorHandler = (err, ctx) => {
       ctx.status = 500;
