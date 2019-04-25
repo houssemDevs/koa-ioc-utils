@@ -9,6 +9,8 @@ their methods.
 
 *NB: in its current version koa-ioc-utils provide an inversify app implementation.*
 
+**this package is in early developpement, not ready yet for production. More documentation and examples will be provided**
+
 Example usage:
 ```javascript
 const {
