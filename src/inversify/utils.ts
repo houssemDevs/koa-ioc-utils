@@ -7,5 +7,9 @@ import { TYPES } from '@/inversify/constants';
  * @param container Inversify container from which controllers are extracted.
  */
 export const getControllersFromContainer = (container: Container): any[] => {
-  return container.getAll(TYPES.controller) || [];
+  try {
+    return container.getAll(TYPES.controller);
+  } catch (err) {
+    throw new Error(`no controller defined in container ${err}`);
+  }
 };
