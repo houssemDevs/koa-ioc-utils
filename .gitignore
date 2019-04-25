@@ -2,5 +2,5 @@ node_modules
 build
 lib
 *-lock.json
-\.*
-doc
+.vs
+.vscode
