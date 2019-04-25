@@ -33,6 +33,9 @@ const app = new KoaInversifyServer(new Container()).build();
 app.listen(3000, () => console.log('server runing on 3000 ...'));
 ```
 ## API Reference :
+
+**a Typedoc generated documentation is available [here](https://houssemdevs.github.io/koa-ioc-utils/)**
+
 + `controller(path, ...middlewares)` : is a class decorator factory, it takes a path and a list of middlewares to be applied before all controller methods.
 
 + `http[verb](path, ...middlewares)` : is a method decorator factory, it takes a path and a list of middlewares to be applied before the method.
