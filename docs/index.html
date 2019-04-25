@@ -76,11 +76,7 @@
 				<p><em>NB: in its current version koa-ioc-utils provide an inversify app implementation.</em></p>
 				<p><strong>this package is in early developpement, not ready yet for production. More documentation and examples will be provided</strong></p>
 				<p>Example usage:</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
-    controller, 
-    httpGet,
-    KoaInversifyServer
-     } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'koa-ioc-utils'</span>);
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { controller, httpGet, KoaInversifyServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'koa-ioc-utils'</span>);
 
 @controller(<span class="hljs-string">'/users'</span>)
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserController</span> </span>{
