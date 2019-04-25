@@ -1,24 +1,36 @@
 import { Container, decorate, injectable } from 'inversify';
-import Application, { ParameterizedContext } from 'koa';
+import Application, { Middleware, ParameterizedContext } from 'koa';
 import compose from 'koa-compose';
 import Router from 'koa-router';
 
-import { TYPES } from '@/inversify/constants';
 import {
   getControllerMetadataByName,
   getControllersFromMetadata,
   getMethodsMetadataFromController,
   getObjectName,
-} from '@/utils';
-import { KoaMiddleware } from '../types';
+} from '../utils';
+import { TYPES } from './constants';
 import { ErrorHandler } from './types';
 import { getControllersFromContainer } from './utils';
 
-export class KoaInversifyServer<KoaState> {
+/**
+ * A Koa application based on InversifyJs DI container
+ * this application given an InversifyJS container, will
+ * construct a Koa App with routes corresponding to the
+ * decorated controllers.
+ * all the controllers are instancieted from the DI container.
+ */
+export class KoaInversifyApplication<KoaState> {
   private errorHandler: ErrorHandler;
-  private logger: KoaMiddleware;
-  private middlewares: KoaMiddleware[];
-
+  private logger: Middleware;
+  private middlewares: Middleware[];
+  /**
+   * construct a new KoaInversifyApplication and setup default
+   * error handler and default logger.
+   * @param _container InversifyJS Container
+   * @param _app koa Application
+   * @param _router koa-router Router
+   */
   constructor(
     private readonly _container: Container,
     private readonly _app = new Application<KoaState>(),
@@ -39,26 +51,62 @@ export class KoaInversifyServer<KoaState> {
     };
   }
 
+  /**
+   * setup the prefix for the root router of the application.
+   * @param prefix prefix for the root koa-router router.
+   */
   public configRouter(prefix: string) {
     this._router = new Router({ prefix });
     return this;
   }
 
+  /**
+   * setup the error handler function for this application.
+   * the error handler is a function that recive and error as first
+   * argument and the koa context at its second argument.
+   * errorHandler(err: Error, ctx: ParametrizedContext)
+   * the error handler middleware is the second koa middleware in
+   * the middleware chain of the application after the logger.
+   * it will wrap all of the other middlewares in a try-catch block,
+   * if anything throw an error the error and the context will be
+   * passed to the error handler function. the default error handler
+   * function will set reponse status to 500 and
+   * the body to a typical internal error message.
+   * @param errorHandler error handler funciton.
+   */
   public configErrorHandler(errorHandler: ErrorHandler) {
     this.errorHandler = errorHandler;
     return this;
   }
 
-  public configMiddlewares(...middlewares: KoaMiddleware[]) {
+  /**
+   * setup the middlewares that are run ahead of all controllers
+   * @param middlewares a list of koa middlewares
+   */
+  public configMiddlewares(...middlewares: Middleware[]) {
     this.middlewares = middlewares;
     return this;
   }
 
-  public configLogger(logger: KoaMiddleware) {
+  /**
+   * setup the application logger middleware. this is the first
+   * middleware in the middleware chain.
+   * @param logger a koa middleware that will handle logging.
+   */
+  public configLogger(logger: Middleware) {
     this.logger = logger;
     return this;
   }
 
+  /**
+   * build and return koa application.
+   * the build process run throught steps.
+   * 1 setup the logger middleware.
+   * 2 setup the error middleware.
+   * 3 setup the rest of middlewares.
+   * 4 register all the controller in the DI container.
+   * 5 get controllers instances from the DI container and build the router.
+   */
   public build(): Application {
     // Setup logger
     this.setupLoggingMiddleware();
@@ -82,6 +130,10 @@ export class KoaInversifyServer<KoaState> {
     return this._app;
   }
 
+  /**
+   * build the koa application and run it on server.
+   * @param port port on which the server will listen
+   */
   public run(port: number): void {
     const app = this.build();
     app.listen(port, () => console.log(`server listening on ${port} ...`));
@@ -148,12 +200,11 @@ export class KoaInversifyServer<KoaState> {
     this._app.use(this.logger);
   }
 
-  private customHttpMethodMiddleware(verb: string) {
-    const methodFilter = async (ctx: ParameterizedContext, next: () => Promise<any>) => {
+  private customHttpMethodMiddleware(verb: string): Middleware {
+    return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       if (ctx.method === verb) {
         await next();
       }
     };
-    return methodFilter;
   }
 }

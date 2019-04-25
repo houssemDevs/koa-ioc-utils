@@ -1,10 +1,18 @@
-import { METADATA_KEYS } from '@/constants';
-import { KnownHttpMethods, KoaMiddleware, MethodMetadata } from '@/types';
+import { Middleware } from 'koa';
 
+import { METADATA_KEYS } from '@/constants';
+import { KnownHttpMethods, MethodMetadata } from '@/types';
+
+/**
+ * define metadata for the decorated method on the controller constructor function.
+ * @param method http method ex: GET, POST, ... etc.
+ * @param path route of this method under the controller route
+ * @param middlewares middlewares that are run ahead of this method.
+ */
 export const httpMethod = (
   method: KnownHttpMethods | string,
   path: string,
-  ...middlewares: KoaMiddleware[]
+  ...middlewares: Middleware[]
 ): MethodDecorator => {
   return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const newMetadata: MethodMetadata = {
@@ -23,17 +31,17 @@ export const httpMethod = (
   };
 };
 
-export const httpGet = (path: string, ...middlewares: KoaMiddleware[]): MethodDecorator =>
+export const httpGet = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('GET', path, ...middlewares);
 
-export const httpPost = (path: string, ...middlewares: KoaMiddleware[]): MethodDecorator =>
+export const httpPost = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('POST', path, ...middlewares);
 
-export const httpPut = (path: string, ...middlewares: KoaMiddleware[]): MethodDecorator =>
+export const httpPut = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('PUT', path, ...middlewares);
 
-export const httpDelete = (path: string, ...middlewares: KoaMiddleware[]): MethodDecorator =>
+export const httpDelete = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('DELETE', path, ...middlewares);
 
-export const httpPatch = (path: string, ...middlewares: KoaMiddleware[]): MethodDecorator =>
+export const httpPatch = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('PATCH', path, ...middlewares);

@@ -1,8 +1,16 @@
-import { METADATA_KEYS } from '@/constants';
-import { ControllerMetadata, KoaMiddleware } from '@/types';
+import { Middleware } from 'koa';
 
-export const controller = (path: string, ...middlewares: KoaMiddleware[]): ClassDecorator => {
+import { METADATA_KEYS } from '@/constants';
+import { ControllerMetadata } from '@/types';
+
+/**
+ * define metadata for the controller decorated on the Reflect global object.
+ * @param path root path for this controller
+ * @param middlewares koa middlewares that are run ahead of any of its methods.
+ */
+export const controller = (path: string, ...middlewares: Middleware[]): ClassDecorator => {
   return (target: Function) => {
+    // this controller metdata.
     const newMetadata: ControllerMetadata = {
       name: target.name,
       controller: target,
@@ -10,6 +18,7 @@ export const controller = (path: string, ...middlewares: KoaMiddleware[]): Class
       path,
     };
 
+    // metadatas of all controllers, make a clean map if not defined.
     const currentMetadata =
       Reflect.getMetadata(METADATA_KEYS.controller, Reflect) || new Map<string, ControllerMetadata>();
 
