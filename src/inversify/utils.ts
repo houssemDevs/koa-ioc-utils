@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { TYPES } from '@/inversify/constants';
+import { TYPES } from './constants';
 
 /**
  * get instances of all the decorated controller from an inversify container.

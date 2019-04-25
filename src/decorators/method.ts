@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 
-import { METADATA_KEYS } from '@/constants';
-import { KnownHttpMethods, MethodMetadata } from '@/types';
+import { METADATA_KEYS } from '../constants';
+import { KnownHttpMethods, MethodMetadata } from '../types';
 
 /**
  * define metadata for the decorated method on the controller constructor function.

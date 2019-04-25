@@ -3,6 +3,8 @@ import Application, { Middleware, ParameterizedContext } from 'koa';
 import compose from 'koa-compose';
 import Router from 'koa-router';
 
+import { isSymbol } from 'util';
+import { BaseMiddleware } from '../base_middleware';
 import {
   getControllerMetadataByName,
   getControllersFromMetadata,
@@ -155,6 +157,23 @@ export class KoaInversifyApplication<KoaState> {
     });
   }
 
+  private composeMiddlewares(middlewares: any[]): Middleware[] {
+    console.log(middlewares);
+    return middlewares.map(middleware => {
+      if (isSymbol(middleware)) {
+        console.log(`symbol on ${middleware.toString()}`);
+        try {
+          const instance = this._container.get<BaseMiddleware>(middleware.valueOf());
+          return instance.handle.bind(instance);
+        } catch (err) {
+          throw new Error(`No middleware bound to ${middleware.toString()} : ${err.message}`);
+        }
+      } else {
+        return middleware;
+      }
+    });
+  }
+
   private mountRoutes() {
     const controllers = getControllersFromContainer(this._container);
     controllers.forEach(c => {
@@ -163,7 +182,10 @@ export class KoaInversifyApplication<KoaState> {
       const router = new Router({ prefix: controllerMetadata.path });
       methodsMetadata.forEach(m => {
         const boundedMethod = c[m.name].bind(c);
-        const routeMiddleware = compose([...controllerMetadata.middlewares, ...m.middlewares]);
+        const routeMiddleware = compose([
+          ...this.composeMiddlewares(controllerMetadata.middlewares),
+          ...this.composeMiddlewares(m.middlewares),
+        ]);
         switch (m.method) {
           case 'GET':
             router.get(`${m.path}`, routeMiddleware, boundedMethod);
