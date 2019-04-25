@@ -17,7 +17,7 @@ export const httpMethod = (
     const currentMethods: Map<string, MethodMetadata> =
       Reflect.getMetadata(METADATA_KEYS.method, target.constructor) || new Map<string, MethodMetadata>();
 
-    currentMethods.set(String(propertyKey), newMetadata);
+    currentMethods.set(newMetadata.name, newMetadata);
 
     Reflect.defineMetadata(METADATA_KEYS.method, currentMethods, target.constructor);
   };

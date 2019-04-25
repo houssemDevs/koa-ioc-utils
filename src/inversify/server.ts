@@ -6,9 +6,9 @@ import Router from 'koa-router';
 import { TYPES } from '@/inversify/constants';
 import {
   getControllerMetadataByName,
-  getControllerNameFromInstance,
   getControllersFromMetadata,
   getMethodsMetadataFromController,
+  getObjectName,
 } from '@/utils';
 import { KoaMiddleware } from '../types';
 import { ErrorHandler } from './types';
@@ -102,7 +102,7 @@ export class KoaInversifyServer<KoaState> {
   private mountRoutes() {
     const controllers = getControllersFromContainer(this._container);
     controllers.forEach(c => {
-      const controllerMetadata = getControllerMetadataByName(getControllerNameFromInstance(c));
+      const controllerMetadata = getControllerMetadataByName(getObjectName(c));
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
       const router = new Router({ prefix: controllerMetadata.path });
       methodsMetadata.forEach(m => {

@@ -4,6 +4,9 @@ export type KoaMiddleware = (ctx: ParameterizedContext, next: () => Promise<any>
 
 export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
+export type ControllersMetadata = Map<string, ControllerMetadata>;
+
+export type MethodsMetadata = Map<string, MethodMetadata>;
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;
