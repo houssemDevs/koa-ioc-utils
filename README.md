@@ -15,7 +15,7 @@ Example usage:
 ```javascript
 const {
     controller, 
-    httpMethod,
+    httpGet,
     KoaInversifyServer
      } = require('koa-ioc-utils');
 
