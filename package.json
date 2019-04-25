@@ -12,7 +12,7 @@
     "dev": "npx tsc --watch",
     "predoc": "npx rimraf -G ./docs",
     "doc": "npx typedoc --out ./docs --mode modules --readme ./README.md",
-    "postdoc": "git add ./docs/*",
+    "postdoc": "git add ./docs/* && git commit -m \"update docs\"",
     "clean": "npx rimraf -G ./lib",
     "preversion": "npm run build && npm t",
     "postversion": "npm run doc && git push && git push --tags",
