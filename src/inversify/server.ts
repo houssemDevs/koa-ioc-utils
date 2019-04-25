@@ -63,7 +63,7 @@ export class KoaInversifyServer<KoaState> {
     // Setup logger
     this.setupLoggingMiddleware();
 
-    //setup error handler
+    // Setup error handler
     this.setupErrorMiddleware();
 
     // Setup middlewares.
