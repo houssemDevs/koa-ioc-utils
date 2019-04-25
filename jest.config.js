@@ -6,4 +6,11 @@ module.exports = {
   },
   verbose: true,
   notify: true,
+  globals: {
+    'ts-jest': {
+      diagnostics: {
+        ignoreCodes: [6059, 18002, 18003, 2532],
+      },
+    },
+  },
 };
