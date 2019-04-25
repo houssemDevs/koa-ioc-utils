@@ -1,6 +1,4 @@
-import { ParameterizedContext } from 'koa';
-
-export type KoaMiddleware = (ctx: ParameterizedContext, next: () => Promise<any>) => void;
+import { Middleware } from 'koa';
 
 export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -10,7 +8,7 @@ export type MethodsMetadata = Map<string, MethodMetadata>;
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;
-  middlewares: KoaMiddleware[];
+  middlewares: Middleware[];
   controller: Function;
   path: string;
 }
@@ -19,6 +17,6 @@ export interface MethodMetadata {
   name: string;
   path: string;
   method: KnownHttpMethods | string;
-  middlewares: KoaMiddleware[];
+  middlewares: Middleware[];
 }
 /* #endregion */
