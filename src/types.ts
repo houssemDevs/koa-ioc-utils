@@ -1,10 +1,14 @@
-import { Middleware } from 'koa';
+import { Middleware as KoaMiddleware } from 'koa';
 
-export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD';
+
+export type HttpMethods = KnownHttpMethods | string;
 
 export type ControllersMetadata = Map<string, ControllerMetadata>;
 
 export type MethodsMetadata = Map<string, MethodMetadata>;
+
+export type Middleware = KoaMiddleware | symbol | string;
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;
@@ -16,7 +20,7 @@ export interface ControllerMetadata {
 export interface MethodMetadata {
   name: string;
   path: string;
-  method: KnownHttpMethods | string;
+  method: HttpMethods;
   middlewares: Middleware[];
 }
 /* #endregion */

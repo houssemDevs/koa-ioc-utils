@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { TYPES } from './constants';
+import { INVERSIFY } from './constants';
 
 /**
  * get instances of all the decorated controller from an inversify container.
@@ -8,7 +8,7 @@ import { TYPES } from './constants';
  */
 export const getControllersFromContainer = (container: Container): any[] => {
   try {
-    return container.getAll(TYPES.controller);
+    return container.getAll(INVERSIFY.CONTROLLER);
   } catch (err) {
     throw new Error(`no controller defined in container ${err}`);
   }

@@ -1,3 +1,3 @@
-export const TYPES = {
-  controller: Symbol('Controller'),
+export const INVERSIFY = {
+  CONTROLLER: Symbol('Controller'),
 };
