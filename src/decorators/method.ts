@@ -1,7 +1,5 @@
-import { Middleware } from 'koa';
-
 import { METADATA_KEYS } from '../constants';
-import { KnownHttpMethods, MethodMetadata } from '../types';
+import { HttpMethods, MethodMetadata, Middleware } from '../types';
 
 /**
  * define metadata for the decorated method on the controller constructor function.
@@ -9,11 +7,7 @@ import { KnownHttpMethods, MethodMetadata } from '../types';
  * @param path route of this method under the controller route
  * @param middlewares middlewares that are run ahead of this method.
  */
-export const httpMethod = (
-  method: KnownHttpMethods | string,
-  path: string,
-  ...middlewares: Middleware[]
-): MethodDecorator => {
+export const httpMethod = (method: HttpMethods, path: string, ...middlewares: Middleware[]): MethodDecorator => {
   return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const newMetadata: MethodMetadata = {
       name: String(propertyKey),
@@ -45,3 +39,6 @@ export const httpDelete = (path: string, ...middlewares: Middleware[]): MethodDe
 
 export const httpPatch = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('PATCH', path, ...middlewares);
+
+export const httpHead = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
+  httpMethod('HEAD', path, ...middlewares);
