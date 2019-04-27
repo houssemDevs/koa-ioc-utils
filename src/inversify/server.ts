@@ -1,9 +1,10 @@
 import { Container, decorate, injectable } from 'inversify';
-import Application, { Middleware, ParameterizedContext } from 'koa';
+import Application, { Middleware as KoaMiddleware, ParameterizedContext } from 'koa';
 import compose from 'koa-compose';
 import Router from 'koa-router';
 
-import { isSymbol } from 'util';
+import { Middleware } from '@/types';
+import { isFunction, isString, isSymbol } from 'util';
 import { BaseMiddleware } from '../base_middleware';
 import {
   getControllerMetadataByName,
@@ -22,10 +23,9 @@ import { getControllersFromContainer } from './utils';
  * decorated controllers.
  * all the controllers are instancieted from the DI container.
  */
-export class KoaInversifyApplication<KoaState> {
+export class KoaInversifyApplication<TState = any, TCustom = {}> {
   private errorHandler: ErrorHandler;
-  private logger: Middleware;
-  private middlewares: Middleware[];
+  private logger: KoaMiddleware;
   private appConfigure: ConfigApp | undefined;
   /**
    * construct a new KoaInversifyApplication and setup default
@@ -36,10 +36,9 @@ export class KoaInversifyApplication<KoaState> {
    */
   constructor(
     private readonly _container: Container,
-    private readonly _app = new Application<KoaState>(),
-    private _router = new Router<KoaState>()
+    private readonly _app = new Application<TState, TCustom>(),
+    private _router = new Router<TState, TCustom>()
   ) {
-    this.middlewares = [];
     this.errorHandler = (err, ctx) => {
       ctx.status = 500;
       ctx.body = 'Something gone wrong, we are working on it';
@@ -97,7 +96,7 @@ export class KoaInversifyApplication<KoaState> {
    * middleware in the middleware chain.
    * @param logger a koa middleware that will handle logging.
    */
-  public configLogger(logger: Middleware) {
+  public configLogger(logger: KoaMiddleware) {
     this.logger = logger;
     return this;
   }
@@ -111,14 +110,14 @@ export class KoaInversifyApplication<KoaState> {
    * 4 register all the controller in the DI container.
    * 5 get controllers instances from the DI container and build the router.
    */
-  public build(): Application {
+  public build(): Application<TState, TCustom> {
     // Setup logger
     this.setupLoggingMiddleware();
 
     // Setup error handler
     this.setupErrorMiddleware();
 
-    // Config app
+    // Configure the app with server level middlewares
     if (this.appConfigure) {
       this.appConfigure(this._app);
     }
@@ -126,8 +125,8 @@ export class KoaInversifyApplication<KoaState> {
     // Registering controllers
     this.registerControllers();
 
-    // Mounting routes to router.
-    this.mountRoutes();
+    // building routes.
+    this.buildRoutes();
 
     // Setup app router.
     this._app.use(this._router.routes());
@@ -157,35 +156,78 @@ export class KoaInversifyApplication<KoaState> {
     });
   }
 
-  private composeMiddlewares(middlewares: any[]): Middleware[] {
-    console.log(middlewares);
+  private resolveMiddlewares(middlewares: any[]): KoaMiddleware[] {
     return middlewares.map(middleware => {
-      if (isSymbol(middleware)) {
-        console.log(`symbol on ${middleware.toString()}`);
-        try {
-          const instance = this._container.get<BaseMiddleware>(middleware.valueOf());
-          return instance.handle.bind(instance);
-        } catch (err) {
-          throw new Error(`No middleware bound to ${middleware.toString()} : ${err.message}`);
-        }
-      } else {
+      if (isFunction(middleware)) {
         return middleware;
+      } else {
+        return this.resolveMiddlewareFromContainer(middleware);
       }
     });
   }
 
-  private mountRoutes() {
+  /**
+   * resolve middlewares from container if they are of
+   * type symbol | string, or if its of type BaseMiddlware
+   * just bind the handle method to the instance and return it
+   * @param middleware middleware to be resolved (not a function)
+   * @throw if the middleware is of unknown type.
+   */
+  private resolveMiddlewareFromContainer(middleware: Middleware): KoaMiddleware {
+    // if the middleware is a symbol or string resolve it from container.
+    if (isSymbol(middleware) || isString(middleware)) {
+      const m = this._container.get(middleware);
+
+      // if the middleware is instance of BaseMiddleware
+      // bind the handle method to the instance and return it
+      // throw if it's not.
+      if (m instanceof BaseMiddleware) {
+        return m.handle.bind(m);
+      } else {
+        throw new Error(
+          `Resolved middleware is not of type BaseMiddleware, make sure to inherit from BaseMiddleware ${
+            m.constructor.name
+          }`
+        );
+      }
+      // its considred a bad habit to have a middleware inherit
+      // from BaseMiddlware and not being resolved from the container
+      // this base calss is used especially to benefit from DI
+    } else if (middleware instanceof BaseMiddleware) {
+      return middleware.handle.bind(middleware);
+    } else {
+      throw new Error(`Unknown middleware type ${typeof middleware} - ${middleware}`);
+    }
+  }
+
+  /**
+   * resolve controllers from the container and
+   * build a koa-router for each controller then
+   * attach the routers to the main app router
+   */
+  private buildRoutes() {
+    // get all controllers from the container
     const controllers = getControllersFromContainer(this._container);
+
+    // for each controller we will build a koa-router
+    // then attach this controller specific router to
+    // the application router.
     controllers.forEach(c => {
       const controllerMetadata = getControllerMetadataByName(getObjectName(c));
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
       const router = new Router({ prefix: controllerMetadata.path });
       methodsMetadata.forEach(m => {
+        // bound the method to controller instance to keep this reference sane.
         const boundedMethod = c[m.name].bind(c);
-        const routeMiddleware = compose([
-          ...this.composeMiddlewares(controllerMetadata.middlewares),
-          ...this.composeMiddlewares(m.middlewares),
-        ]);
+
+        // resolve controller and method middlewares chain
+        const controllerMiddlewares = this.resolveMiddlewares(controllerMetadata.middlewares);
+        const methodMiddlewares = this.resolveMiddlewares(m.middlewares);
+
+        // compose route middlewares chain from controller and methods middlewares.
+        const routeMiddleware = compose([...controllerMiddlewares, ...methodMiddlewares]);
+
+        // mount the route handler to the router
         switch (m.method) {
           case 'GET':
             router.get(`${m.path}`, routeMiddleware, boundedMethod);
@@ -207,6 +249,8 @@ export class KoaInversifyApplication<KoaState> {
             break;
         }
       });
+
+      // attach controller router to the application router.
       this._router.use(router.routes());
       this._router.use(router.allowedMethods());
     });
@@ -226,7 +270,7 @@ export class KoaInversifyApplication<KoaState> {
     this._app.use(this.logger);
   }
 
-  private customHttpMethodMiddleware(verb: string): Middleware {
+  private customHttpMethodMiddleware(verb: string): KoaMiddleware {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       if (ctx.method === verb) {
         await next();

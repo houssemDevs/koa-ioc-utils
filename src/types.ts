@@ -1,10 +1,13 @@
-import { Middleware } from 'koa';
+import { Middleware as KoaMiddleware } from 'koa';
+import { BaseMiddleware } from './base_middleware';
 
 export type KnownHttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export type ControllersMetadata = Map<string, ControllerMetadata>;
 
 export type MethodsMetadata = Map<string, MethodMetadata>;
+
+export type Middleware = KoaMiddleware | symbol | BaseMiddleware | string;
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;
