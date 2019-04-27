@@ -1,6 +1,6 @@
 {
-  "exclude": ["node_modules"],
-  "include": ["src"],
+  "exclude": ["node_modules", "lib"],
+  "include": ["examples"],
   "compilerOptions": {
     /* Basic Options */
     "target": "es2015" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
@@ -12,8 +12,8 @@
     "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     "sourceMap": true /* Generates corresponding '.map' file. */,
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./lib" /* Redirect output structure to the directory. */,
-    "rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+    "outDir": "./lib.examples" /* Redirect output structure to the directory. */,
+    "rootDir": "./examples" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
 
     /* Strict Type-Checking Options */
     "strict": true /* Enable all strict type-checking options. */,

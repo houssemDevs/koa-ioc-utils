@@ -12,7 +12,7 @@ import {
   getMethodsMetadataFromController,
   getObjectName,
 } from '../utils';
-import { TYPES } from './constants';
+import { INVERSIFY } from './constants';
 import { ConfigApp, ErrorHandler } from './types';
 import { getControllersFromContainer } from './utils';
 
@@ -144,22 +144,32 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     app.listen(port, () => console.log(`server listening on ${port} ...`));
   }
 
+  /**
+   * register all the decorated controllers to the
+   * inversify container for further instanciation.
+   */
   private registerControllers() {
     const controllersMetadata = getControllersFromMetadata();
     controllersMetadata.forEach(c => {
       decorate(injectable(), c.controller);
 
       this._container
-        .bind(TYPES.controller)
+        .bind(INVERSIFY.CONTROLLER)
         .to(c.controller as any)
         .whenTargetNamed(c.name);
     });
   }
 
-  private resolveMiddlewares(middlewares: any[]): KoaMiddleware[] {
+  /**
+   * transform the Middleware[] to KoaMiddleware[] either by
+   * resolving it from the container or just return it if its
+   * of type function.
+   * @param middlewares controller or method middlewares to resolve
+   */
+  private resolveMiddlewares(middlewares: Middleware[]): KoaMiddleware[] {
     return middlewares.map(middleware => {
       if (isFunction(middleware)) {
-        return middleware;
+        return middleware as KoaMiddleware;
       } else {
         return this.resolveMiddlewareFromContainer(middleware);
       }
@@ -214,8 +224,14 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     // the application router.
     controllers.forEach(c => {
       const controllerMetadata = getControllerMetadataByName(getObjectName(c));
+
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
+
       const router = new Router({ prefix: controllerMetadata.path });
+
+      // for each method of the controller bind it
+      // to the controller instance to keep this reference
+      // sane, and mount it to the controller koa-router
       methodsMetadata.forEach(m => {
         // bound the method to controller instance to keep this reference sane.
         const boundedMethod = c[m.name].bind(c);

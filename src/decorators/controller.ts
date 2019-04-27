@@ -1,7 +1,5 @@
-import { Middleware } from 'koa';
-
 import { METADATA_KEYS } from '../constants';
-import { ControllerMetadata } from '../types';
+import { ControllerMetadata, Middleware } from '../types';
 
 /**
  * define metadata for the controller decorated on the Reflect global object.

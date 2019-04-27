@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { Container, injectable } from 'inversify';
 
 import { getControllersFromContainer } from '../src/inversify/utils';
-import { TYPES } from '../src/inversify/constants';
+import { INVERSIFY } from '../src/inversify/constants';
 import { controller, httpGet } from '../src/decorators';
 
 class UserController {
@@ -23,7 +23,7 @@ describe('inversify.utils', () => {
     });
 
     it('should get all controllers from container', () => {
-      container.bind(TYPES.controller).to(UserController);
+      container.bind(INVERSIFY.CONTROLLER).to(UserController);
 
       const controllers = getControllersFromContainer(container);
 

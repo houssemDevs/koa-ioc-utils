@@ -1,10 +1,12 @@
+import 'reflect-metadata';
+
 import { Container, decorate, inject, injectable } from 'inversify';
 import Application, { ParameterizedContext } from 'koa';
-import 'reflect-metadata';
 import supertest from 'supertest';
 
 import { controller, httpGet, KoaInversifyApplication, BaseMiddleware } from '../src';
-import { METADATA_KEYS } from '../src/constants';
+
+decorate(injectable(), BaseMiddleware);
 
 describe('KoaInversifyServer', () => {
   interface IUsersService {
@@ -71,13 +73,14 @@ describe('KoaInversifyServer', () => {
   decorate(httpGet('/', routeMiddleware), MidController.prototype, 'test');
 
   class Middlew extends BaseMiddleware {
-    public handle(ctx: Application.ParameterizedContext<any, {}>, next: () => Promise<any>) {
+    public async handle(ctx: Application.ParameterizedContext<any, {}>, next: () => Promise<any>) {
       ctx.state.s = true;
+      await next();
     }
   }
   decorate(injectable(), Middlew);
 
-  const symbolId = Symbol('Middlew');
+  const middlewareId = Symbol('Middlew');
 
   class Controller {
     public t(ctx: ParameterizedContext) {
@@ -88,12 +91,12 @@ describe('KoaInversifyServer', () => {
       }
     }
   }
-  decorate(controller('/middl', symbolId), Controller);
+  decorate(controller('/middl', middlewareId), Controller);
   decorate(httpGet('/'), Controller.prototype, 't');
 
   const container = new Container();
   container.bind<IUsersService>(UserService).toSelf();
-  container.bind<BaseMiddleware>(symbolId).to(Middlew);
+  container.bind<BaseMiddleware>(middlewareId).to(Middlew);
 
   const app = new KoaInversifyApplication(container).build();
 
