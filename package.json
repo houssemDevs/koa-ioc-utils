@@ -29,7 +29,10 @@
     "ioc",
     "inversify",
     "metadta",
-    "reflect-metadata"
+    "reflect-metadata",
+    "di",
+    "dependancy injection",
+    "inversion of control"
   ],
   "author": "GHIAT Houssem",
   "license": "MIT",
