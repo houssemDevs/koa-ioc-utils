@@ -75,6 +75,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httpdelete" class="tsd-kind-icon">http<wbr>Delete</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httpget" class="tsd-kind-icon">http<wbr>Get</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httphead" class="tsd-kind-icon">http<wbr>Head</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httpmethod" class="tsd-kind-icon">http<wbr>Method</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httppatch" class="tsd-kind-icon">http<wbr>Patch</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_method_.html#httppost" class="tsd-kind-icon">http<wbr>Post</a></li>
@@ -90,13 +91,13 @@
 					<a name="httpdelete" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Delete</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Delete<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Delete<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L43">decorators/method.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L37">decorators/method.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -105,7 +106,7 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
@@ -116,13 +117,13 @@
 					<a name="httpget" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Get</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Get<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Get<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L34">decorators/method.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L28">decorators/method.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -131,7 +132,33 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="httphead" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Head</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Head<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L43">decorators/method.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
@@ -142,13 +169,13 @@
 					<a name="httpmethod" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Method</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Method<span class="tsd-signature-symbol">(</span>method<span class="tsd-signature-symbol">: </span><a href="_types_.html#knownhttpmethods" class="tsd-signature-type">KnownHttpMethods</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Method<span class="tsd-signature-symbol">(</span>method<span class="tsd-signature-symbol">: </span><a href="_types_.html#httpmethods" class="tsd-signature-type">HttpMethods</a>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L12">decorators/method.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L10">decorators/method.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -159,7 +186,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>method: <a href="_types_.html#knownhttpmethods" class="tsd-signature-type">KnownHttpMethods</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<h5>method: <a href="_types_.html#httpmethods" class="tsd-signature-type">HttpMethods</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>http method ex: GET, POST, ... etc.</p>
@@ -175,7 +202,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>middlewares that are run ahead of this method.</p>
@@ -191,13 +218,13 @@
 					<a name="httppatch" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Patch</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Patch<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Patch<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L46">decorators/method.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L40">decorators/method.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -206,7 +233,7 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
@@ -217,13 +244,13 @@
 					<a name="httppost" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Post</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Post<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Post<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L37">decorators/method.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L31">decorators/method.ts:31</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -232,7 +259,7 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
@@ -243,13 +270,13 @@
 					<a name="httpput" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> http<wbr>Put</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">http<wbr>Put<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
+						<li class="tsd-signature tsd-kind-icon">http<wbr>Put<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>middlewares<span class="tsd-signature-symbol">: </span><a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MethodDecorator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/decorators/method.ts#L40">decorators/method.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/decorators/method.ts#L34">decorators/method.ts:34</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -258,7 +285,7 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <span class="tsd-signature-type">Middleware</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>middlewares: <a href="_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MethodDecorator</span></h4>
@@ -272,6 +299,12 @@
 				<ul>
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_base_controller_.html">"base_<wbr>controller"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_base_middleware_.html">"base_<wbr>middleware"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_constants_.html">"constants"</a>
@@ -318,6 +351,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_decorators_method_.html#httpget" class="tsd-kind-icon">http<wbr>Get</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_decorators_method_.html#httphead" class="tsd-kind-icon">http<wbr>Head</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_decorators_method_.html#httpmethod" class="tsd-kind-icon">http<wbr>Method</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;inversify/constants&quot; | koa-ioc-utils</title>
+	<title>BaseMiddleware | koa-ioc-utils</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,50 +56,99 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_inversify_constants_.html">&quot;inversify/constants&quot;</a>
+					<a href="../modules/_base_middleware_.html">&quot;base_middleware&quot;</a>
+				</li>
+				<li>
+					<a href="_base_middleware_.basemiddleware.html">BaseMiddleware</a>
 				</li>
 			</ul>
-			<h1>External module &quot;inversify/constants&quot;</h1>
+			<h1>Class BaseMiddleware&lt;TState, TCustom&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A Middleware abstract class intended to be used
+							for middlewares that need DI capabilities when get
+						constructed.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>TState</h4>
+					</li>
+					<li>
+						<h4>TCustom</h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">BaseMiddleware</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Object literals</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="_inversify_constants_.html#inversify" class="tsd-kind-icon">INVERSIFY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_base_middleware_.basemiddleware.html#handle" class="tsd-kind-icon">handle</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Object literals</h2>
-				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module">
-					<a name="inversify" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> INVERSIFY</h3>
-					<div class="tsd-signature tsd-kind-icon">INVERSIFY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/inversify/constants.ts#L1">inversify/constants.ts:1</a></li>
-						</ul>
-					</aside>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="inversify.controller" class="tsd-anchor"></a>
-						<h3>CONTROLLER</h3>
-						<div class="tsd-signature tsd-kind-icon">CONTROLLER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol(&#x27;Controller&#x27;)</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/inversify/constants.ts#L2">inversify/constants.ts:2</a></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="handle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> handle</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">handle<span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ParameterizedContext</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TState</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TCustom</span><span class="tsd-signature-symbol">&gt;</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/base_middleware.ts#L9">base_middleware.ts:9</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ctx: <span class="tsd-signature-type">ParameterizedContext</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TState</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TCustom</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>next: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
 							</ul>
-						</aside>
-					</section>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -110,54 +159,63 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_base_controller_.html">"base_<wbr>controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_base_middleware_.html">"base_<wbr>middleware"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_constants_.html">"constants"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_decorators_controller_.html">"decorators/controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_decorators_index_.html">"decorators/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_decorators_method_.html">"decorators/method"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">"index"</a>
+						<a href="../modules/_base_controller_.html">"base_<wbr>controller"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_inversify_constants_.html">"inversify/constants"</a>
+						<a href="../modules/_base_middleware_.html">"base_<wbr>middleware"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_inversify_index_.html">"inversify/index"</a>
+						<a href="../modules/_constants_.html">"constants"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_inversify_server_.html">"inversify/server"</a>
+						<a href="../modules/_decorators_controller_.html">"decorators/controller"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_inversify_types_.html">"inversify/types"</a>
+						<a href="../modules/_decorators_index_.html">"decorators/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_inversify_utils_.html">"inversify/utils"</a>
+						<a href="../modules/_decorators_method_.html">"decorators/method"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_types_.html">"types"</a>
+						<a href="../modules/_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_utils_.html">"utils"</a>
+						<a href="../modules/_inversify_constants_.html">"inversify/constants"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_inversify_index_.html">"inversify/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_inversify_server_.html">"inversify/server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_inversify_types_.html">"inversify/types"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_inversify_utils_.html">"inversify/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_types_.html">"types"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_utils_.html">"utils"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="_inversify_constants_.html#inversify" class="tsd-kind-icon">INVERSIFY</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_base_middleware_.basemiddleware.html" class="tsd-kind-icon">Base<wbr>Middleware</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_base_middleware_.basemiddleware.html#handle" class="tsd-kind-icon">handle</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

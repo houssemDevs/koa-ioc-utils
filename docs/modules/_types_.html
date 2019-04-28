@@ -81,8 +81,10 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#controllersmetadata" class="tsd-kind-icon">Controllers<wbr>Metadata</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#httpmethods" class="tsd-kind-icon">Http<wbr>Methods</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#knownhttpmethods" class="tsd-kind-icon">Known<wbr>Http<wbr>Methods</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#methodsmetadata" class="tsd-kind-icon">Methods<wbr>Metadata</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#middleware" class="tsd-kind-icon">Middleware</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,17 +98,27 @@
 					<div class="tsd-signature tsd-kind-icon">Controllers<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.controllermetadata.html" class="tsd-signature-type">ControllerMetadata</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/types.ts#L5">types.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/types.ts#L8">types.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="httpmethods" class="tsd-anchor"></a>
+					<h3>Http<wbr>Methods</h3>
+					<div class="tsd-signature tsd-kind-icon">Http<wbr>Methods<span class="tsd-signature-symbol">:</span> <a href="_types_.html#knownhttpmethods" class="tsd-signature-type">KnownHttpMethods</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/types.ts#L6">types.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
 					<a name="knownhttpmethods" class="tsd-anchor"></a>
 					<h3>Known<wbr>Http<wbr>Methods</h3>
-					<div class="tsd-signature tsd-kind-icon">Known<wbr>Http<wbr>Methods<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"GET"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"POST"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"PUT"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"PATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DELETE"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Known<wbr>Http<wbr>Methods<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"GET"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"POST"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"PUT"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"PATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DELETE"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"HEAD"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/types.ts#L3">types.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/types.ts#L4">types.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -116,7 +128,17 @@
 					<div class="tsd-signature tsd-kind-icon">Methods<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.methodmetadata.html" class="tsd-signature-type">MethodMetadata</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/0055735/src/types.ts#L7">types.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/types.ts#L10">types.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="middleware" class="tsd-anchor"></a>
+					<h3>Middleware</h3>
+					<div class="tsd-signature tsd-kind-icon">Middleware<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">KoaMiddleware</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><a href="../classes/_base_middleware_.basemiddleware.html" class="tsd-signature-type">BaseMiddleware</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemDevs/koa-ioc-utils/blob/b451b10/src/types.ts#L12">types.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -127,6 +149,12 @@
 				<ul>
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_base_controller_.html">"base_<wbr>controller"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_base_middleware_.html">"base_<wbr>middleware"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_constants_.html">"constants"</a>
@@ -178,10 +206,16 @@
 						<a href="_types_.html#controllersmetadata" class="tsd-kind-icon">Controllers<wbr>Metadata</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#httpmethods" class="tsd-kind-icon">Http<wbr>Methods</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#knownhttpmethods" class="tsd-kind-icon">Known<wbr>Http<wbr>Methods</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#methodsmetadata" class="tsd-kind-icon">Methods<wbr>Metadata</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#middleware" class="tsd-kind-icon">Middleware</a>
 					</li>
 				</ul>
 			</nav>
