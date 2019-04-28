@@ -1,27 +1,36 @@
 import { ParameterizedContext } from 'koa';
-import { isObject, isString } from 'util';
+import { URL } from 'url';
 
 export abstract class BaseController<TState = any, TCustom = {}> {
   protected ok<T>(ctx: ParameterizedContext<TState, TCustom>, data: T) {
-    if (isObject(data)) {
+    let d: T | null = data;
+    ctx.status = 200;
+    if (!d) {
+      d = null;
+    } else if (typeof d === 'object') {
       ctx.type = 'application/json';
     } else {
       ctx.type = 'text/plain';
     }
-    ctx.status = 200;
-    ctx.body = data;
+    ctx.body = d;
   }
   protected notFound(ctx: ParameterizedContext<TState, TCustom>) {
     ctx.status = 404;
     ctx.body = null;
   }
-  protected redirect(ctx: ParameterizedContext<TState, TCustom>, location: string) {
-    ctx.redirect(location);
+  protected redirect(ctx: ParameterizedContext<TState, TCustom>, location: string | URL) {
+    ctx.redirect(location.toString());
   }
-  protected accpected(ctx: ParameterizedContext<TState, TCustom>) {
+  protected accepted(ctx: ParameterizedContext<TState, TCustom>) {
     ctx.status = 202;
   }
-  protected created(ctx: ParameterizedContext<TState, TCustom>) {
+  protected created(ctx: ParameterizedContext<TState, TCustom>, location?: string | URL) {
     ctx.status = 201;
+    if (location) {
+      ctx.type = 'application/json';
+      ctx.body = { link: location.toString() };
+    } else {
+      ctx.body = null;
+    }
   }
 }
