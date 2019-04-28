@@ -2,7 +2,7 @@ import { METADATA_KEYS } from '../constants';
 import { ControllerMetadata, Middleware } from '../types';
 
 /**
- * define metadata for the controller decorated on the Reflect global object.
+ * define metadata for the decorated controller on the Reflect global object.
  * @param path root path for this controller
  * @param middlewares koa middlewares that are run ahead of any of its methods.
  */
