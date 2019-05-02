@@ -10,6 +10,7 @@ export type ControllersMetadata = Map<string, ControllerMetadata>;
 export type MethodsMetadata = Map<string, MethodMetadata>;
 
 export type Middleware = KoaMiddleware | symbol | BaseMiddleware | string;
+
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;
@@ -23,5 +24,15 @@ export interface MethodMetadata {
   path: string;
   method: HttpMethods;
   middlewares: Middleware[];
+}
+
+export interface ParamsMetadata {
+  context?: number;
+  resp?: number;
+  req?: number;
+  next?: number;
+  params?: Array<{ name: string; index: number }>;
+  queries?: Array<{ name: string; index: number }>;
+  cookies?: Array<{ name: string; index: number }>;
 }
 /* #endregion */

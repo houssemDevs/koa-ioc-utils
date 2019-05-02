@@ -1,5 +1,5 @@
 import { METADATA_KEYS } from './constants';
-import { ControllerMetadata, ControllersMetadata, MethodMetadata, MethodsMetadata } from './types';
+import { ControllerMetadata, ControllersMetadata, MethodMetadata, MethodsMetadata, ParamsMetadata } from './types';
 
 /**
  * get all the decorated controllers metadata, or an empty Array.
@@ -18,6 +18,12 @@ export const getMethodsMetadataFromController = (controller: Function): MethodsM
     return methodsMetadataMap;
   }
   throw new Error(`no methods defined on controller ${controller.name}`);
+};
+
+export const getMethodParamsMetadata = (method: any): ParamsMetadata => {
+  const metadata: ParamsMetadata = Reflect.getMetadata(METADATA_KEYS.params, method);
+
+  return metadata;
 };
 
 /**

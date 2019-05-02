@@ -1,9 +1,26 @@
 import 'reflect-metadata';
 
 import supertest from 'supertest';
-import { ParameterizedContext } from 'koa';
+import { ParameterizedContext, Response, Request } from 'koa';
 
-import { KoaInversifyApplication, controller, httpDelete, httpGet, httpHead, httpPatch, httpPost, httpPut, BaseMiddleware } from '../src';
+import {
+  KoaInversifyApplication,
+  controller,
+  httpDelete,
+  httpGet,
+  httpHead,
+  httpPatch,
+  httpPost,
+  httpPut,
+  BaseMiddleware,
+  ctx,
+  resp,
+  req,
+  next,
+  p,
+  q,
+  ck,
+} from '../src';
 import { METADATA_KEYS } from '../src/constants';
 import { Container, injectable } from 'inversify';
 
@@ -178,5 +195,153 @@ describe('KoaInversifyApplication', () => {
 
     expect(resp.status).toEqual(200);
     expect(resp.text).toMatch('mid');
+  });
+
+  it('should bound context to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello1(@ctx context: any) {
+        context.status = 200;
+        context.body = 'context';
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('context');
+  });
+
+  it('should bound response to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello2(@resp response: Response) {
+        response.status = 200;
+        response.body = 'response';
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const res = await supertest.agent(app).get('/hello');
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toMatch('response');
+  });
+
+  it('should bound request to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello3(@req request: Request) {
+        request.response.status = 200;
+        request.response.body = 'request';
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('request');
+  });
+
+  it('should bound next to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public async hello4(@next next: any, @ctx ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'next';
+        await next();
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('next');
+  });
+
+  it('should bound params to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello/:p1')
+      public async hello4(@p('p1') p1: any) {
+        return p1;
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello/houssem');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('houssem');
+  });
+
+  it('should bound queries to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public async hello4(@q('q1') q1: any, @q('q2') q2: any) {
+        return `${q1}-${q2}`;
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello?q1=houssem&q2=ghiat');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('houssem-ghiat');
+  });
+
+  it('should bound cookies to param', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public async hello4(@ck('c') c: string, @ck('g') g: string) {
+        return `${c}--${g}`;
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest
+      .agent(app)
+      .get('/hello')
+      .set('Cookie', ['c=houssem', 'g=ghiat']);
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('houssem--ghiat');
   });
 });

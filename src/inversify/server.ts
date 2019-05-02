@@ -3,12 +3,14 @@ import Application, { Middleware as KoaMiddleware, ParameterizedContext } from '
 import compose from 'koa-compose';
 import Router from 'koa-router';
 
-import { Middleware } from '@/types';
+import { METADATA_KEYS } from '@/constants';
+import { Middleware, ParamsMetadata } from '@/types';
 import { isFunction, isString, isSymbol } from 'util';
 import { BaseMiddleware } from '../base_middleware';
 import {
   getControllerMetadataByName,
   getControllersFromMetadata,
+  getMethodParamsMetadata,
   getMethodsMetadataFromController,
   getObjectName,
 } from '../utils';
@@ -210,6 +212,81 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     }
   }
 
+  private resolveMethod(controller: any, methodName: string): KoaMiddleware {
+    const method: Function = controller.constructor.prototype[methodName];
+    const paramsMetadata: ParamsMetadata = Reflect.getMetadata(METADATA_KEYS.params, method);
+
+    if (paramsMetadata) {
+      const handler = async (ctx: ParameterizedContext, next: () => Promise<any>): Promise<any> => {
+        const args = new Array(method.length);
+
+        if (paramsMetadata.context !== undefined) {
+          args[paramsMetadata.context] = ctx;
+        }
+
+        if (paramsMetadata.req !== undefined) {
+          args[paramsMetadata.req] = ctx.request;
+        }
+
+        if (paramsMetadata.resp !== undefined) {
+          args[paramsMetadata.resp] = ctx.response;
+        }
+
+        if (paramsMetadata.next !== undefined) {
+          args[paramsMetadata.next] = next;
+        }
+
+        if (paramsMetadata.params !== undefined) {
+          paramsMetadata.params.forEach(p => {
+            if (ctx.params[p.name]) {
+              args[p.index] = ctx.params[p.name];
+            } else {
+              args[p.index] = undefined;
+            }
+          });
+        }
+
+        if (paramsMetadata.queries !== undefined) {
+          paramsMetadata.queries.forEach(q => {
+            if (ctx.query[q.name]) {
+              args[q.index] = ctx.query[q.name];
+            } else {
+              args[q.index] = undefined;
+            }
+          });
+        }
+
+        if (paramsMetadata.cookies !== undefined) {
+          paramsMetadata.cookies.forEach(ck => {
+            if (ctx.cookies.get(ck.name)) {
+              args[ck.index] = ctx.cookies.get(ck.name);
+            } else {
+              args[ck.index] = undefined;
+            }
+          });
+        }
+
+        if (args.length < method.length) {
+          throw new Error('Method with decorated params need to have all of its params decorated');
+        }
+
+        const result = await controller[methodName](...args);
+
+        if (!ctx.body) {
+          ctx.body = result;
+        }
+
+        if (paramsMetadata.next === undefined) {
+          await next();
+        }
+      };
+
+      return handler;
+    } else {
+      return controller[methodName].bind(controller);
+    }
+  }
+
   /**
    * resolve controllers from the container and
    * build a koa-router for each controller then
@@ -237,8 +314,8 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
       // to the controller instance to keep this reference
       // sane, and mount it to the controller koa-router
       methodsMetadata.forEach(m => {
-        // bound the method to controller instance to keep this reference sane.
-        const boundedMethod = c[m.name].bind(c);
+        // resolve the method that will handle the request.
+        const handler = this.resolveMethod(c, m.name);
 
         // resolve controller and method middlewares chain
         const controllerMiddlewares = this.resolveMiddlewares(controllerMetadata.middlewares);
@@ -251,31 +328,31 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
         switch (m.method) {
           case 'GET':
             // console.log(`${controllerMetadata.name} : GET - MATCHED ${m.method}`);
-            router.get(`${m.path}`, routeMiddleware, boundedMethod);
+            router.get(`${m.path}`, routeMiddleware, handler);
             break;
           case 'POST':
             // console.log(`${controllerMetadata.name} : POST - MATCHED ${m.method}`);
-            router.post(`${m.path}`, routeMiddleware, boundedMethod);
+            router.post(`${m.path}`, routeMiddleware, handler);
             break;
           case 'DELETE':
             // console.log(`${controllerMetadata.name} : DELETE - MATCHED ${m.method}`);
-            router.delete(`${m.path}`, routeMiddleware, boundedMethod);
+            router.delete(`${m.path}`, routeMiddleware, handler);
             break;
           case 'PUT':
             // console.log(`${controllerMetadata.name} : PUT - MATCHED ${m.method}`);
-            router.put(`${m.path}`, routeMiddleware, boundedMethod);
+            router.put(`${m.path}`, routeMiddleware, handler);
             break;
           case 'PATCH':
             // console.log(`${controllerMetadata.name} : PATCH - MATCHED ${m.method}`);
-            router.patch(`${m.path}`, routeMiddleware, boundedMethod);
+            router.patch(`${m.path}`, routeMiddleware, handler);
             break;
           case 'HEAD':
             // console.log(`${controllerMetadata.name} : HEAD - MATCHED ${m.method}`);
-            router.head(`${m.path}`, routeMiddleware, boundedMethod);
+            router.head(`${m.path}`, routeMiddleware, handler);
             break;
           default:
             // console.log(`${controllerMetadata.name} : CUSTOM METHOD ${m.method}`);
-            router.use(this.methodFilter(m.method), boundedMethod);
+            router.all(`${m.path}`, this.methodFilter(m.method), handler);
             break;
         }
       });
@@ -304,14 +381,13 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
   }
 
   // TODO: correct matching route bug, try all with a filter middleware.
+  // TODO: test it
   private methodFilter(verb: string): KoaMiddleware {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       if (ctx.method === verb) {
-        console.log(`Filtering method ${verb} - OK`);
         await next();
       } else {
-        console.log(`Filtering method ${verb} - KO`);
-        ctx.status = 401;
+        ctx.status = 400;
         ctx.body = verb;
       }
     };
