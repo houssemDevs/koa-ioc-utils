@@ -1,131 +1,182 @@
 import 'reflect-metadata';
 
-import { Container, decorate, inject, injectable } from 'inversify';
-import Application, { ParameterizedContext } from 'koa';
 import supertest from 'supertest';
+import { ParameterizedContext } from 'koa';
 
-import { controller, httpGet, KoaInversifyApplication, BaseMiddleware } from '../src';
+import { KoaInversifyApplication, controller, httpDelete, httpGet, httpHead, httpPatch, httpPost, httpPut, BaseMiddleware } from '../src';
+import { METADATA_KEYS } from '../src/constants';
+import { Container, injectable } from 'inversify';
 
-decorate(injectable(), BaseMiddleware);
+describe('KoaInversifyApplication', () => {
+  afterEach(() => {
+    Reflect.deleteMetadata(METADATA_KEYS.controller, Reflect);
+  });
 
-describe('KoaInversifyServer', () => {
-  interface IUsersService {
-    getUsers(): string[];
-  }
-
-  class UserService implements IUsersService {
-    public getUsers(): string[] {
-      return ['houssem', 'narimene'];
-    }
-  }
-  decorate(injectable(), UserService);
-
-  // tslint:disable-next-line: max-classes-per-file
-  class UserController {
-    private name: string = 'GHIAT Houssem';
-    constructor(private userService: IUsersService) {}
-    public getName(ctx: ParameterizedContext) {
-      ctx.status = 200;
-      ctx.body = { name: this.name };
-    }
-    public throwError() {
-      throw new Error('Error test');
-    }
-    public users(ctx: any) {
-      ctx.status = 200;
-      ctx.body = this.userService.getUsers();
-    }
-  }
-  decorate(controller('/user'), UserController);
-  decorate(inject(UserService), UserController, 0);
-  decorate(httpGet('/name'), UserController.prototype, 'getName');
-  decorate(httpGet('/error'), UserController.prototype, 'throwError');
-  decorate(httpGet('/users'), UserController.prototype, 'users');
-
-  const firstMiddleware = async (ctx: any, next: any) => {
-    ctx.state.id = 123;
-    await next();
-  };
-
-  const secondMiddleware = async (ctx: any, next: any) => {
-    expect(ctx.state.id).toEqual(123);
-    ctx.state.id2 = 456;
-    await next();
-  };
-
-  const routeMiddleware = async (ctx: any, next: any) => {
-    expect(ctx.state.id2).toEqual(456);
-    ctx.state.id3 = 789;
-    await next();
-  };
-
-  // tslint:disable-next-line: max-classes-per-file
-  class MidController {
-    public test(ctx: any) {
-      expect(ctx.state.id).toEqual(123);
-      expect(ctx.state.id2).toEqual(456);
-      expect(ctx.state.id3).toEqual(789);
-      ctx.status = 200;
-      ctx.body = '200';
-    }
-  }
-  decorate(controller('/mid', firstMiddleware, secondMiddleware), MidController);
-  decorate(httpGet('/', routeMiddleware), MidController.prototype, 'test');
-
-  class Middlew extends BaseMiddleware {
-    public async handle(ctx: Application.ParameterizedContext<any, {}>, next: () => Promise<any>) {
-      ctx.state.s = true;
-      await next();
-    }
-  }
-  decorate(injectable(), Middlew);
-
-  const middlewareId = Symbol('Middlew');
-
-  class Controller {
-    public t(ctx: ParameterizedContext) {
-      if (ctx.state.s) {
+  it('should build a basic koa app', async () => {
+    class BasicController {
+      public greet(ctx: any) {
         ctx.status = 200;
-      } else {
-        ctx.status = 500;
+        ctx.body = 'hello';
       }
     }
-  }
-  decorate(controller('/middl', middlewareId), Controller);
-  decorate(httpGet('/'), Controller.prototype, 't');
 
-  const container = new Container();
-  container.bind<IUsersService>(UserService).toSelf();
-  container.bind<BaseMiddleware>(middlewareId).to(Middlew);
+    Reflect.decorate([controller('/')], BasicController);
+    Reflect.decorate([httpGet('/')], BasicController.prototype, 'greet');
 
-  const app = new KoaInversifyApplication(container).build();
+    const app = new KoaInversifyApplication()
+      .configLogger(async (ctx, next) => await next())
+      .build()
+      .callback();
 
-  it('should respond correctly', async () => {
-    const resp = await supertest.agent(app.callback()).get('/user/name');
-    expect(resp.body).toEqual({ name: 'GHIAT Houssem' });
+    const resp = await supertest.agent(app).get('/');
+
     expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('hello');
   });
 
-  it('should handle errors correctly', async () => {
-    const resp = await supertest.agent(app.callback()).get('/user/error');
-    expect(resp.status).toEqual(500);
-    expect(resp.text).toMatch(/gone\swrong/);
+  it('should handle known http methods', async () => {
+    class Controller {
+      public mget(ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'get';
+      }
+      public mpost(ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'post';
+      }
+      public mhead(ctx: any) {
+        ctx.status = 200;
+        ctx.set({ head: 'head' });
+        ctx.body = 'head';
+      }
+      public mput(ctx: any) {
+        ctx.status = 201;
+      }
+      public mdelete(ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'delete';
+      }
+      public mpatch(ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'patch';
+      }
+    }
+
+    Reflect.decorate([controller('/')], Controller);
+    Reflect.decorate([httpGet('/get')], Controller.prototype, 'mget');
+    Reflect.decorate([httpPost('/post')], Controller.prototype, 'mpost');
+    Reflect.decorate([httpHead('/head')], Controller.prototype, 'mhead');
+    Reflect.decorate([httpPut('/put')], Controller.prototype, 'mput');
+    Reflect.decorate([httpDelete('/delete')], Controller.prototype, 'mdelete');
+    Reflect.decorate([httpPatch('/patch')], Controller.prototype, 'mpatch');
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (_, next) => await next())
+      .build()
+      .callback();
+
+    let resp = await supertest.agent(app).get('/get');
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toEqual('get');
+
+    resp = await supertest.agent(app).post('/post');
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toEqual('post');
+
+    resp = await supertest.agent(app).head('/head');
+    expect(resp.status).toEqual(200);
+    expect(resp.header.head).toEqual('head');
+    expect(resp.text).toBeUndefined();
+
+    resp = await supertest.agent(app).put('/put');
+    expect(resp.status).toEqual(201);
+
+    resp = await supertest.agent(app).delete('/delete');
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toEqual('delete');
+
+    resp = await supertest.agent(app).patch('/patch');
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toEqual('patch');
   });
 
-  it('should access container services correctly', async () => {
-    const resp = await supertest.agent(app.callback()).get('/user/users');
+  it('should chain classic middlewares', async () => {
+    class Controller {
+      public hello(ctx: any) {
+        const { app, controller, method } = ctx.state;
+
+        ctx.status = 200;
+        ctx.body = `${app}-${controller}-${method}`;
+      }
+    }
+
+    const appMiddleware = async (ctx, next) => {
+      ctx.state.app = 'a';
+      await next();
+    };
+
+    const controllerMiddleware = async (ctx, next) => {
+      ctx.state.controller = 'c';
+      await next();
+    };
+
+    const methodMiddleware = async (ctx, next) => {
+      ctx.state.method = 'm';
+      await next();
+    };
+
+    Reflect.decorate([controller('/', controllerMiddleware)], Controller);
+    Reflect.decorate([httpGet('/hello', methodMiddleware)], Controller.prototype, 'hello');
+
+    const app = new KoaInversifyApplication()
+      .configApp(app => app.use(appMiddleware))
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
     expect(resp.status).toEqual(200);
-    expect(resp.body).toEqual(['houssem', 'narimene']);
+    expect(resp.text).toMatch('a-c-m');
   });
 
-  it('should permit controller level middlewares correctly', async () => {
-    const resp = await supertest.agent(app.callback()).get('/mid');
-    expect(resp.status).toEqual(200);
-    expect(resp.text).toMatch('200');
-  });
+  it('should handle BaseMiddleware middlewares', async () => {
+    class Controller {
+      public hello(ctx: any) {
+        const { m } = ctx.state;
 
-  it('should accept a symbol middleware', async () => {
-    const resp = await supertest.agent(app.callback()).get('/middl');
+        ctx.status = 200;
+        ctx.body = `${m}`;
+      }
+    }
+
+    class Middleware extends BaseMiddleware {
+      public async handle(ctx: ParameterizedContext<any, {}>, next: () => Promise<any>): Promise<any> {
+        ctx.state.m = 'mid';
+
+        await next();
+      }
+    }
+
+    // need to decorate them with inversify injectable
+    Reflect.decorate([injectable()], BaseMiddleware);
+    Reflect.decorate([injectable()], Middleware);
+
+    Reflect.decorate([controller('/')], Controller);
+    Reflect.decorate([httpGet('/hello', Middleware.name)], Controller.prototype, 'hello');
+
+    const container = new Container();
+
+    container.bind<BaseMiddleware>(Middleware.name).to(Middleware);
+
+    const app = new KoaInversifyApplication(container)
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
     expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('mid');
   });
 });
