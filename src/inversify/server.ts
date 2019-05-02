@@ -35,9 +35,9 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
    * @param _router koa-router Router
    */
   constructor(
-    private readonly _container: Container,
+    private readonly _container: Container = new Container(),
     private readonly _app = new Application<TState, TCustom>(),
-    private _router = new Router<TState, TCustom>()
+    private readonly _router = new Router<TState, TCustom>()
   ) {
     this.errorHandler = (err, ctx) => {
       ctx.status = 500;
@@ -68,7 +68,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
    * @param prefix prefix for the root koa-router router.
    */
   public configRouter(prefix: string) {
-    this._router = new Router({ prefix });
+    this._router.prefix(prefix);
     return this;
   }
 
@@ -227,7 +227,11 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
 
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
 
-      const router = new Router({ prefix: controllerMetadata.path });
+      const router = new Router();
+
+      if (controllerMetadata.path !== '/') {
+        router.prefix(controllerMetadata.path);
+      }
 
       // for each method of the controller bind it
       // to the controller instance to keep this reference
@@ -246,25 +250,38 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
         // mount the route handler to the router
         switch (m.method) {
           case 'GET':
+            // console.log(`${controllerMetadata.name} : GET - MATCHED ${m.method}`);
             router.get(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'POST':
+            // console.log(`${controllerMetadata.name} : POST - MATCHED ${m.method}`);
             router.post(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'DELETE':
+            // console.log(`${controllerMetadata.name} : DELETE - MATCHED ${m.method}`);
             router.delete(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'PUT':
+            // console.log(`${controllerMetadata.name} : PUT - MATCHED ${m.method}`);
             router.put(`${m.path}`, routeMiddleware, boundedMethod);
             break;
           case 'PATCH':
+            // console.log(`${controllerMetadata.name} : PATCH - MATCHED ${m.method}`);
             router.patch(`${m.path}`, routeMiddleware, boundedMethod);
             break;
+          case 'HEAD':
+            // console.log(`${controllerMetadata.name} : HEAD - MATCHED ${m.method}`);
+            router.head(`${m.path}`, routeMiddleware, boundedMethod);
+            break;
           default:
-            router.use(this.customHttpMethodMiddleware(m.method), boundedMethod);
+            // console.log(`${controllerMetadata.name} : CUSTOM METHOD ${m.method}`);
+            router.use(this.methodFilter(m.method), boundedMethod);
             break;
         }
       });
+
+      // console.log(`Controller : ${controllerMetadata.name}`);
+      // console.log(router.stack);
 
       // attach controller router to the application router.
       this._router.use(router.routes());
@@ -286,10 +303,16 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     this._app.use(this.logger);
   }
 
-  private customHttpMethodMiddleware(verb: string): KoaMiddleware {
+  // TODO: correct matching route bug, try all with a filter middleware.
+  private methodFilter(verb: string): KoaMiddleware {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       if (ctx.method === verb) {
+        console.log(`Filtering method ${verb} - OK`);
         await next();
+      } else {
+        console.log(`Filtering method ${verb} - KO`);
+        ctx.status = 401;
+        ctx.body = verb;
       }
     };
   }
