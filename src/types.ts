@@ -22,7 +22,7 @@ export interface ControllerMetadata {
 export interface MethodMetadata {
   name: string;
   path: string;
-  method: HttpMethods;
+  httpMethod: HttpMethods;
   middlewares: Middleware[];
 }
 

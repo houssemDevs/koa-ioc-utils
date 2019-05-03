@@ -47,11 +47,11 @@ describe('decorators', () => {
 
       expect(metadata1).toBeDefined();
       expect(metadata1.size).toEqual(2);
-      expect(metadata1.get('getAllUsers').method).toEqual('GET');
+      expect(metadata1.get('getAllUsers').httpMethod).toEqual('GET');
       expect(metadata1.get('getAllUsers').middlewares).toEqual([]);
       expect(metadata1.get('getAllUsers').name).toEqual('getAllUsers');
       expect(metadata1.get('getAllUsers').path).toEqual('/');
-      expect(metadata1.get('createUser').method).toEqual('POST');
+      expect(metadata1.get('createUser').httpMethod).toEqual('POST');
       expect(metadata1.get('createUser').middlewares).toEqual([middleware]);
       expect(metadata1.get('createUser').name).toEqual('createUser');
       expect(metadata1.get('createUser').path).toEqual('/new');

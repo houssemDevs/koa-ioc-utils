@@ -3,16 +3,17 @@ import { HttpMethods, MethodMetadata, Middleware } from '../types';
 
 /**
  * define metadata for the decorated method on the controller constructor function.
- * @param method http method ex: GET, POST, ... etc.
+ * @param httpMethod http method ex: GET, POST, ... etc.
  * @param path route of this method under the controller route
  * @param middlewares middlewares that are run ahead of this method.
  */
-export const httpMethod = (method: HttpMethods, path: string, ...middlewares: Middleware[]): MethodDecorator => {
+// tslint:disable-next-line: no-shadowed-variable
+export const httpMethod = (httpMethod: HttpMethods, path: string, ...middlewares: Middleware[]): MethodDecorator => {
   return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const newMetadata: MethodMetadata = {
       name: String(propertyKey),
       path,
-      method,
+      httpMethod,
       middlewares,
     };
 

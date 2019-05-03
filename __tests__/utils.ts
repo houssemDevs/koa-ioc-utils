@@ -46,7 +46,7 @@ describe('utils', () => {
       expect(metadata).toBeDefined();
       expect(metadata.size).toEqual(1);
       expect(metadata.get(methodName)).toBeDefined();
-      expect(metadata.get(methodName).method).toEqual('GET');
+      expect(metadata.get(methodName).httpMethod).toEqual('GET');
       expect(metadata.get(methodName).middlewares).toEqual([]);
       expect(metadata.get(methodName).path).toEqual('/');
       expect(metadata.get(methodName).name).toEqual(methodName);
