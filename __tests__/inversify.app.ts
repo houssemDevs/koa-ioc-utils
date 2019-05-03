@@ -197,6 +197,103 @@ describe('KoaInversifyApplication', () => {
     expect(resp.text).toMatch('mid');
   });
 
+  it('should config logger', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello(ctx: any) {
+        ctx.status = 200;
+        ctx.body = ctx.state.log;
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configLogger(async (c: any, n) => {
+        c.state.log = 'log';
+        await n();
+      })
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('log');
+  });
+
+  it('should config app', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello(ctx: any) {
+        ctx.status = 200;
+        ctx.body = ctx.state.app;
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configApp(app =>
+        app.use(async (c: any, n) => {
+          c.state.app = 'app';
+          await n();
+        })
+      )
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('app');
+  });
+
+  it('should config error handler', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello(ctx: any) {
+        throw new Error('error');
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configErrorHandler((err, c) => {
+        c.status = 500;
+        c.body = err.message;
+      })
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/hello');
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).toMatch('error');
+  });
+
+  it('should config router prefix', async () => {
+    @controller('/')
+    class Controller {
+      @httpGet('/hello')
+      public hello(ctx: any) {
+        ctx.status = 200;
+        ctx.body = 'OK';
+      }
+    }
+
+    const app = new KoaInversifyApplication()
+      .configRouter('/router')
+      .configLogger(async (_, n) => await n())
+      .build()
+      .callback();
+
+    const resp = await supertest.agent(app).get('/router/hello');
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toMatch('OK');
+  });
+
   it('should bound context to param', async () => {
     @controller('/')
     class Controller {
