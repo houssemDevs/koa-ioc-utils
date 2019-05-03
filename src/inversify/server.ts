@@ -3,7 +3,6 @@ import Application, { Middleware as KoaMiddleware, ParameterizedContext } from '
 import compose from 'koa-compose';
 import Router from 'koa-router';
 
-import { METADATA_KEYS } from '@/constants';
 import { Middleware, ParamsMetadata } from '@/types';
 import { isFunction, isString, isSymbol } from 'util';
 import { BaseMiddleware } from '../base_middleware';
@@ -172,49 +171,46 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     return middlewares.map(middleware => {
       if (isFunction(middleware)) {
         return middleware as KoaMiddleware;
+      } else if (isSymbol(middleware) || isString(middleware)) {
+        // if the middleware is a symbol or string resolve it from container.
+        const m = this._container.get(middleware);
+
+        // if the middleware is instance of BaseMiddleware
+        // bind the handle method to the instance and return it
+        // throw if it's not.
+        if (m instanceof BaseMiddleware) {
+          return m.handle.bind(m);
+        } else {
+          throw new Error(
+            `Resolved middleware is not of type BaseMiddleware, make sure to inherit from BaseMiddleware ${
+              m.constructor.name
+            }`
+          );
+        }
+        // its considred a bad habit to have a middleware inherit
+        // from BaseMiddlware and not being resolved from the container
+        // this base calss is used especially to benefit from DI
+      } else if (middleware instanceof BaseMiddleware) {
+        return middleware.handle.bind(middleware);
       } else {
-        return this.resolveMiddlewareFromContainer(middleware);
+        throw new Error(`Unknown middleware type ${typeof middleware} - ${middleware}`);
       }
     });
   }
 
-  /**
-   * resolve middlewares from container if they are of
-   * type symbol | string, or if its of type BaseMiddlware
-   * just bind the handle method to the instance and return it
-   * @param middleware middleware to be resolved (not a function)
-   * @throw if the middleware is of unknown type.
-   */
-  private resolveMiddlewareFromContainer(middleware: Middleware): KoaMiddleware {
-    // if the middleware is a symbol or string resolve it from container.
-    if (isSymbol(middleware) || isString(middleware)) {
-      const m = this._container.get(middleware);
-
-      // if the middleware is instance of BaseMiddleware
-      // bind the handle method to the instance and return it
-      // throw if it's not.
-      if (m instanceof BaseMiddleware) {
-        return m.handle.bind(m);
-      } else {
-        throw new Error(
-          `Resolved middleware is not of type BaseMiddleware, make sure to inherit from BaseMiddleware ${
-            m.constructor.name
-          }`
-        );
-      }
-      // its considred a bad habit to have a middleware inherit
-      // from BaseMiddlware and not being resolved from the container
-      // this base calss is used especially to benefit from DI
-    } else if (middleware instanceof BaseMiddleware) {
-      return middleware.handle.bind(middleware);
-    } else {
-      throw new Error(`Unknown middleware type ${typeof middleware} - ${middleware}`);
-    }
-  }
+  // /**
+  //  * resolve middlewares from container if they are of
+  //  * type symbol | string, or if its of type BaseMiddlware
+  //  * just bind the handle method to the instance and return it
+  //  * @param middleware middleware to be resolved (not a function)
+  //  * @throw if the middleware is of unknown type.
+  //  */
+  // private resolveMiddlewareFromContainer(middleware: Middleware): KoaMiddleware {}
 
   private resolveMethod(controller: any, methodName: string): KoaMiddleware {
     const method: Function = controller.constructor.prototype[methodName];
-    const paramsMetadata: ParamsMetadata = Reflect.getMetadata(METADATA_KEYS.params, method);
+
+    const paramsMetadata: ParamsMetadata = getMethodParamsMetadata(method);
 
     if (paramsMetadata) {
       const handler = async (ctx: ParameterizedContext, next: () => Promise<any>): Promise<any> => {
@@ -283,6 +279,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
 
       return handler;
     } else {
+      // TODO: check if method is conform koa middleware.
       return controller[methodName].bind(controller);
     }
   }
@@ -299,8 +296,8 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     // for each controller we will build a koa-router
     // then attach this controller specific router to
     // the application router.
-    controllers.forEach(c => {
-      const controllerMetadata = getControllerMetadataByName(getObjectName(c));
+    controllers.forEach(controller => {
+      const controllerMetadata = getControllerMetadataByName(getObjectName(controller));
 
       const methodsMetadata = getMethodsMetadataFromController(controllerMetadata.controller);
 
@@ -313,46 +310,46 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
       // for each method of the controller bind it
       // to the controller instance to keep this reference
       // sane, and mount it to the controller koa-router
-      methodsMetadata.forEach(m => {
+      methodsMetadata.forEach(methodMetadata => {
         // resolve the method that will handle the request.
-        const handler = this.resolveMethod(c, m.name);
+        const routeHandler = this.resolveMethod(controller, methodMetadata.name);
 
         // resolve controller and method middlewares chain
         const controllerMiddlewares = this.resolveMiddlewares(controllerMetadata.middlewares);
-        const methodMiddlewares = this.resolveMiddlewares(m.middlewares);
+        const methodMiddlewares = this.resolveMiddlewares(methodMetadata.middlewares);
 
         // compose route middlewares chain from controller and methods middlewares.
         const routeMiddleware = compose([...controllerMiddlewares, ...methodMiddlewares]);
 
         // mount the route handler to the router
-        switch (m.method) {
+        switch (methodMetadata.httpMethod) {
           case 'GET':
             // console.log(`${controllerMetadata.name} : GET - MATCHED ${m.method}`);
-            router.get(`${m.path}`, routeMiddleware, handler);
+            router.get(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           case 'POST':
             // console.log(`${controllerMetadata.name} : POST - MATCHED ${m.method}`);
-            router.post(`${m.path}`, routeMiddleware, handler);
+            router.post(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           case 'DELETE':
             // console.log(`${controllerMetadata.name} : DELETE - MATCHED ${m.method}`);
-            router.delete(`${m.path}`, routeMiddleware, handler);
+            router.delete(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           case 'PUT':
             // console.log(`${controllerMetadata.name} : PUT - MATCHED ${m.method}`);
-            router.put(`${m.path}`, routeMiddleware, handler);
+            router.put(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           case 'PATCH':
             // console.log(`${controllerMetadata.name} : PATCH - MATCHED ${m.method}`);
-            router.patch(`${m.path}`, routeMiddleware, handler);
+            router.patch(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           case 'HEAD':
             // console.log(`${controllerMetadata.name} : HEAD - MATCHED ${m.method}`);
-            router.head(`${m.path}`, routeMiddleware, handler);
+            router.head(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
           default:
             // console.log(`${controllerMetadata.name} : CUSTOM METHOD ${m.method}`);
-            router.all(`${m.path}`, this.methodFilter(m.method), handler);
+            router.all(`${methodMetadata.path}`, this.httpMethodFilter(methodMetadata.httpMethod), routeHandler);
             break;
         }
       });
@@ -382,13 +379,12 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
 
   // TODO: correct matching route bug, try all with a filter middleware.
   // TODO: test it
-  private methodFilter(verb: string): KoaMiddleware {
+  private httpMethodFilter(verb: string): KoaMiddleware {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       if (ctx.method === verb) {
         await next();
       } else {
-        ctx.status = 400;
-        ctx.body = verb;
+        ctx.status = 405;
       }
     };
   }
