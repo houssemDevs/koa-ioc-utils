@@ -1,5 +1,5 @@
-import { METADATA_KEYS } from '@/constants';
-import { ParamsMetadata } from '@/types';
+import { METADATA_KEYS } from '../constants';
+import { ParamsMetadata } from '../types';
 
 export const ctx: ParameterDecorator = (target: Object, propertyKey: string | symbol, pararmterIndex: number) => {
   const method = target.constructor.prototype[String(propertyKey)];
