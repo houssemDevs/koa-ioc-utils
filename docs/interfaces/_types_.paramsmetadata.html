@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MethodMetadata | koa-ioc-utils</title>
+	<title>ParamsMetadata | koa-ioc-utils</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_types_.html">&quot;types&quot;</a>
 				</li>
 				<li>
-					<a href="_types_.methodmetadata.html">MethodMetadata</a>
+					<a href="_types_.paramsmetadata.html">ParamsMetadata</a>
 				</li>
 			</ul>
-			<h1>Interface MethodMetadata</h1>
+			<h1>Interface ParamsMetadata</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MethodMetadata</span>
+						<span class="target">ParamsMetadata</span>
 					</li>
 				</ul>
 			</section>
@@ -84,10 +84,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.methodmetadata.html#httpmethod" class="tsd-kind-icon">http<wbr>Method</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.methodmetadata.html#middlewares" class="tsd-kind-icon">middlewares</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.methodmetadata.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.methodmetadata.html#path" class="tsd-kind-icon">path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#cookies" class="tsd-kind-icon">cookies</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#params" class="tsd-kind-icon">params</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#queries" class="tsd-kind-icon">queries</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#req" class="tsd-kind-icon">req</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.paramsmetadata.html#resp" class="tsd-kind-icon">resp</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,42 +99,72 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="httpmethod" class="tsd-anchor"></a>
-					<h3>http<wbr>Method</h3>
-					<div class="tsd-signature tsd-kind-icon">http<wbr>Method<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#httpmethods" class="tsd-signature-type">HttpMethods</a></div>
+					<a name="context" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context</h3>
+					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L25">types.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L30">types.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="middlewares" class="tsd-anchor"></a>
-					<h3>middlewares</h3>
-					<div class="tsd-signature tsd-kind-icon">middlewares<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="cookies" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cookies</h3>
+					<div class="tsd-signature tsd-kind-icon">cookies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L26">types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L36">types.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="next" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> next</h3>
+					<div class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L23">types.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L33">types.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="path" class="tsd-anchor"></a>
-					<h3>path</h3>
-					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="params" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> params</h3>
+					<div class="tsd-signature tsd-kind-icon">params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L24">types.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L34">types.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="queries" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> queries</h3>
+					<div class="tsd-signature tsd-kind-icon">queries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L35">types.ts:35</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="req" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> req</h3>
+					<div class="tsd-signature tsd-kind-icon">req<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L32">types.ts:32</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="resp" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> resp</h3>
+					<div class="tsd-signature tsd-kind-icon">resp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/64741b8/src/types.ts#L31">types.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -195,30 +228,39 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_types_.controllermetadata.html" class="tsd-kind-icon">Controller<wbr>Metadata</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_types_.methodmetadata.html" class="tsd-kind-icon">Method<wbr>Metadata</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_types_.methodmetadata.html" class="tsd-kind-icon">Method<wbr>Metadata</a>
+						<a href="_types_.paramsmetadata.html" class="tsd-kind-icon">Params<wbr>Metadata</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.methodmetadata.html#httpmethod" class="tsd-kind-icon">http<wbr>Method</a>
+								<a href="_types_.paramsmetadata.html#context" class="tsd-kind-icon">context</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.methodmetadata.html#middlewares" class="tsd-kind-icon">middlewares</a>
+								<a href="_types_.paramsmetadata.html#cookies" class="tsd-kind-icon">cookies</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.methodmetadata.html#name" class="tsd-kind-icon">name</a>
+								<a href="_types_.paramsmetadata.html#next" class="tsd-kind-icon">next</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.methodmetadata.html#path" class="tsd-kind-icon">path</a>
+								<a href="_types_.paramsmetadata.html#params" class="tsd-kind-icon">params</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.paramsmetadata.html#queries" class="tsd-kind-icon">queries</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.paramsmetadata.html#req" class="tsd-kind-icon">req</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.paramsmetadata.html#resp" class="tsd-kind-icon">resp</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_types_.paramsmetadata.html" class="tsd-kind-icon">Params<wbr>Metadata</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_types_.html#controllersmetadata" class="tsd-kind-icon">Controllers<wbr>Metadata</a>
 					</li>
