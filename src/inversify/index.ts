@@ -1,3 +1,3 @@
-export { KoaInversifyApplication } from './server';
+export { KoaInversifyApplication } from './app';
 
 export { ErrorHandler } from './types';

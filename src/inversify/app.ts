@@ -173,7 +173,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
         return middleware as KoaMiddleware;
       } else if (isSymbol(middleware) || isString(middleware)) {
         // if the middleware is a symbol or string resolve it from container.
-        const m = this._container.get(middleware);
+        const m = this._container.get<any>(middleware);
 
         // if the middleware is instance of BaseMiddleware
         // bind the handle method to the instance and return it
@@ -182,9 +182,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
           return m.handle.bind(m);
         } else {
           throw new Error(
-            `Resolved middleware is not of type BaseMiddleware, make sure to inherit from BaseMiddleware ${
-              m.constructor.name
-            }`
+            `Resolved middleware is not of type BaseMiddleware, make sure to inherit from BaseMiddleware ${m.constructor.name}`
           );
         }
         // its considred a bad habit to have a middleware inherit
