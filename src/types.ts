@@ -11,6 +11,15 @@ export type MethodsMetadata = Map<string, MethodMetadata>;
 
 export type Middleware = KoaMiddleware | symbol | BaseMiddleware | string;
 
+export interface IReponseObject {
+  status: number;
+  type: string;
+  body: any;
+  headers: Array<{ header: string; value: string }>;
+}
+
+export type ErrorMapper = (err: Error) => IReponseObject;
+
 /* #region  Metadata types */
 export interface ControllerMetadata {
   name: string;

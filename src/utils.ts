@@ -1,5 +1,15 @@
+import { Context } from 'koa';
+import mime from 'mime';
 import { METADATA_KEYS } from './constants';
-import { ControllerMetadata, ControllersMetadata, MethodMetadata, MethodsMetadata, ParamsMetadata } from './types';
+import {
+  ControllerMetadata,
+  ControllersMetadata,
+  ErrorMapper,
+  IReponseObject,
+  MethodMetadata,
+  MethodsMetadata,
+  ParamsMetadata,
+} from './types';
 
 /**
  * get all the decorated controllers metadata, or an empty Array.
@@ -48,4 +58,22 @@ export const getControllerMetadataByName = (name: string): ControllerMetadata =>
   } else {
     throw new Error(`No controller metadata for name ${name}`);
   }
+};
+
+export const responseObjectToKoaResponse = (ro: IReponseObject, ctx: Context) => {
+  ctx.type = ro.type;
+  ctx.status = ro.status;
+  ro.headers.forEach(h => {
+    ctx.set(h.header, h.value);
+  });
+  ctx.body = ro.body;
+};
+
+export const defaultErrorMapper: ErrorMapper = (err: Error) => {
+  return {
+    type: mime.getType('json') || 'application/json',
+    status: 500,
+    headers: [],
+    body: { error: 'internal server error, contact site admin' },
+  };
 };
