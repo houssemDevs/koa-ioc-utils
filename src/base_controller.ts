@@ -33,4 +33,16 @@ export abstract class BaseController<TState = any, TCustom = {}> {
       ctx.body = null;
     }
   }
+  protected unauthorized<T>(ctx: ParameterizedContext<TState, TCustom>, data: T) {
+    ctx.status = 401;
+    let d: T | null = data;
+    if (!d) {
+      d = null;
+    } else if (typeof d === 'object') {
+      ctx.type = 'application/json';
+    } else {
+      ctx.type = 'text/plain';
+    }
+    ctx.body = d;
+  }
 }
