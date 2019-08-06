@@ -116,6 +116,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#_container" class="tsd-kind-icon">_container</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#_router" class="tsd-kind-icon">_router</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#appconfigure" class="tsd-kind-icon">app<wbr>Configure</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#apptailconfigure" class="tsd-kind-icon">app<wbr>Tail<wbr>Configure</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#errorhandler" class="tsd-kind-icon">error<wbr>Handler</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#logger" class="tsd-kind-icon">logger</a></li>
 							</ul>
@@ -129,6 +130,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_inversify_app_.koainversifyapplication.html#configerrorhandler" class="tsd-kind-icon">config<wbr>Error<wbr>Handler</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_inversify_app_.koainversifyapplication.html#configlogger" class="tsd-kind-icon">config<wbr>Logger</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_inversify_app_.koainversifyapplication.html#configrouter" class="tsd-kind-icon">config<wbr>Router</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_inversify_app_.koainversifyapplication.html#configtailapp" class="tsd-kind-icon">config<wbr>Tail<wbr>App</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#httpmethodfilter" class="tsd-kind-icon">http<wbr>Method<wbr>Filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#registercontrollers" class="tsd-kind-icon">register<wbr>Controllers</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_inversify_app_.koainversifyapplication.html#resolvemethod" class="tsd-kind-icon">resolve<wbr>Method</a></li>
@@ -153,7 +155,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L30">inversify/app.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L34">inversify/app.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,7 +204,7 @@
 					<div class="tsd-signature tsd-kind-icon">_app<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Application</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TState</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TCustom</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L40">inversify/app.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L44">inversify/app.ts:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -217,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">_container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L39">inversify/app.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L43">inversify/app.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -232,7 +234,7 @@
 					<div class="tsd-signature tsd-kind-icon">_router<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TState</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TCustom</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L41">inversify/app.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L45">inversify/app.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,7 +249,17 @@
 					<div class="tsd-signature tsd-kind-icon">app<wbr>Configure<span class="tsd-signature-symbol">:</span> <a href="../modules/_inversify_types_.html#configapp" class="tsd-signature-type">ConfigApp</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L30">inversify/app.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L33">inversify/app.ts:33</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="apptailconfigure" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> app<wbr>Tail<wbr>Configure</h3>
+					<div class="tsd-signature tsd-kind-icon">app<wbr>Tail<wbr>Configure<span class="tsd-signature-symbol">:</span> <a href="../modules/_inversify_types_.html#configapp" class="tsd-signature-type">ConfigApp</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L34">inversify/app.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -257,7 +269,7 @@
 					<div class="tsd-signature tsd-kind-icon">error<wbr>Handler<span class="tsd-signature-symbol">:</span> <a href="../modules/_inversify_types_.html#errorhandler" class="tsd-signature-type">ErrorHandler</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L28">inversify/app.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L31">inversify/app.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -267,7 +279,7 @@
 					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">KoaMiddleware</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L29">inversify/app.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L32">inversify/app.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -284,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L114">inversify/app.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L128">inversify/app.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -295,7 +307,8 @@
 										2 setup the error middleware.
 										3 setup the rest of middlewares.
 										4 register all the controller in the DI container.
-									5 get controllers instances from the DI container and build the router.</p>
+										5 get controllers instances from the DI container and build the router.
+									6 configure the built app</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Application</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TState</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TCustom</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -312,7 +325,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L290">inversify/app.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L309">inversify/app.ts:309</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +349,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L62">inversify/app.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L64">inversify/app.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L90">inversify/app.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L103">inversify/app.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,7 +422,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L100">inversify/app.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L113">inversify/app.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -441,7 +454,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L71">inversify/app.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L84">inversify/app.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -462,6 +475,39 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="configtailapp" class="tsd-anchor"></a>
+					<h3>config<wbr>Tail<wbr>App</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">config<wbr>Tail<wbr>App<span class="tsd-signature-symbol">(</span>c<span class="tsd-signature-symbol">: </span><a href="../modules/_inversify_types_.html#configapp" class="tsd-signature-type">ConfigApp</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L75">inversify/app.ts:75</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>get a function that take a koa app an configure it with server level
+										middlewares.
+									the configuration function is called after mounting routes to the router.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>c: <a href="../modules/_inversify_types_.html#configapp" class="tsd-signature-type">ConfigApp</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>configurtion function</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="httpmethodfilter" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> http<wbr>Method<wbr>Filter</h3>
@@ -472,7 +518,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L380">inversify/app.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L405">inversify/app.ts:405</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -495,7 +541,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L152">inversify/app.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L171">inversify/app.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -518,7 +564,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L208">inversify/app.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L227">inversify/app.ts:227</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -544,7 +590,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L170">inversify/app.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L189">inversify/app.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -577,7 +623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L143">inversify/app.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L162">inversify/app.ts:162</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -608,7 +654,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L364">inversify/app.ts:364</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L389">inversify/app.ts:389</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -625,7 +671,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/35b7df2/src/inversify/app.ts#L374">inversify/app.ts:374</a></li>
+									<li>Defined in <a href="https://github.com/houssemdevs/koa-ioc-utils/blob/97ccbf4/src/inversify/app.ts#L399">inversify/app.ts:399</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -710,6 +756,9 @@
 								<a href="_inversify_app_.koainversifyapplication.html#appconfigure" class="tsd-kind-icon">app<wbr>Configure</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_inversify_app_.koainversifyapplication.html#apptailconfigure" class="tsd-kind-icon">app<wbr>Tail<wbr>Configure</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_inversify_app_.koainversifyapplication.html#errorhandler" class="tsd-kind-icon">error<wbr>Handler</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -732,6 +781,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_inversify_app_.koainversifyapplication.html#configrouter" class="tsd-kind-icon">config<wbr>Router</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_inversify_app_.koainversifyapplication.html#configtailapp" class="tsd-kind-icon">config<wbr>Tail<wbr>App</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_inversify_app_.koainversifyapplication.html#httpmethodfilter" class="tsd-kind-icon">http<wbr>Method<wbr>Filter</a>
