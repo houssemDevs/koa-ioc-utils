@@ -7,6 +7,7 @@ export {
   httpPut,
   httpPatch,
   httpHead,
+  httpAll,
   ctx,
   resp,
   req,
@@ -19,3 +20,5 @@ export {
 export { KoaInversifyApplication, ErrorHandler } from './inversify';
 
 export { BaseMiddleware } from './base_middleware';
+
+export { IReponseObject, ErrorMapper } from './types';
