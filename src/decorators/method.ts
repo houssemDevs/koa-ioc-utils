@@ -43,3 +43,6 @@ export const httpPatch = (path: string, ...middlewares: Middleware[]): MethodDec
 
 export const httpHead = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
   httpMethod('HEAD', path, ...middlewares);
+
+export const httpAll = (path: string, ...middlewares: Middleware[]): MethodDecorator =>
+  httpMethod('ALL', path, ...middlewares);

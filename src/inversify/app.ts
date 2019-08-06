@@ -2,16 +2,19 @@ import { Container, decorate, injectable } from 'inversify';
 import Application, { Middleware as KoaMiddleware, ParameterizedContext } from 'koa';
 import compose from 'koa-compose';
 import Router from 'koa-router';
+import { performance } from 'perf_hooks';
 
 import { Middleware, ParamsMetadata } from '@/types';
 import { isFunction, isString, isSymbol } from 'util';
 import { BaseMiddleware } from '../base_middleware';
 import {
+  defaultErrorMapper,
   getControllerMetadataByName,
   getControllersFromMetadata,
   getMethodParamsMetadata,
   getMethodsMetadataFromController,
   getObjectName,
+  responseObjectToKoaResponse,
 } from '../utils';
 import { INVERSIFY } from './constants';
 import { ConfigApp, ErrorHandler } from './types';
@@ -28,6 +31,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
   private errorHandler: ErrorHandler;
   private logger: KoaMiddleware;
   private appConfigure: ConfigApp | undefined;
+  private appTailConfigure: ConfigApp | undefined;
   /**
    * construct a new KoaInversifyApplication and setup default
    * error handler and default logger.
@@ -41,16 +45,14 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     private readonly _router = new Router<TState, TCustom>()
   ) {
     this.errorHandler = (err, ctx) => {
-      ctx.status = 500;
-      ctx.body = 'Something gone wrong, we are working on it';
+      responseObjectToKoaResponse(defaultErrorMapper(err), ctx);
       console.log(`[ERROR]: ${err.name} - ${err.message}`);
     };
     this.logger = async (ctx, next) => {
-      const startedAt = Date.now();
+      const startedAt = performance.now();
       console.log(`<-- ${ctx.method} ${ctx.path} ${ctx.host}`);
       await next();
-      const time = Date.now() - startedAt;
-      console.log(`--> ${ctx.method} ${ctx.path} ${ctx.host} ${ctx.status} ${time}ms`);
+      console.log(`--> ${ctx.method} ${ctx.path} ${ctx.host} ${ctx.status} ${performance.now() - startedAt}ms`);
     };
   }
 
@@ -61,6 +63,17 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
    */
   public configApp(c: ConfigApp) {
     this.appConfigure = c;
+    return this;
+  }
+
+  /**
+   * get a function that take a koa app an configure it with server level
+   * middlewares.
+   * the configuration function is called after mounting routes to the router.
+   * @param c configurtion function
+   */
+  public configTailApp(c: ConfigApp) {
+    this.appTailConfigure = c;
     return this;
   }
 
@@ -110,6 +123,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
    * 3 setup the rest of middlewares.
    * 4 register all the controller in the DI container.
    * 5 get controllers instances from the DI container and build the router.
+   * 6 configure the built app
    */
   public build(): Application<TState, TCustom> {
     // Setup logger
@@ -132,6 +146,11 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
     // Setup app router.
     this._app.use(this._router.routes());
     this._app.use(this._router.allowedMethods());
+
+    // tail configuration
+    if (this.appTailConfigure) {
+      this.appTailConfigure(this._app);
+    }
 
     return this._app;
   }
@@ -306,7 +325,7 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
       }
 
       // for each method of the controller bind it
-      // to the controller instance to keep this reference
+      // to the controller instance to keep 'this' reference
       // sane, and mount it to the controller koa-router
       methodsMetadata.forEach(methodMetadata => {
         // resolve the method that will handle the request.
@@ -345,9 +364,15 @@ export class KoaInversifyApplication<TState = any, TCustom = {}> {
             // console.log(`${controllerMetadata.name} : HEAD - MATCHED ${m.method}`);
             router.head(`${methodMetadata.path}`, routeMiddleware, routeHandler);
             break;
+          case 'ALL':
+            router.all(`${methodMetadata.path}`, routeMiddleware, routeHandler);
           default:
             // console.log(`${controllerMetadata.name} : CUSTOM METHOD ${m.method}`);
-            router.all(`${methodMetadata.path}`, this.httpMethodFilter(methodMetadata.httpMethod), routeHandler);
+            router.all(
+              `${methodMetadata.path}`,
+              compose([routeMiddleware, this.httpMethodFilter(methodMetadata.httpMethod)]),
+              routeHandler
+            );
             break;
         }
       });
